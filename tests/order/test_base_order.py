@@ -58,6 +58,8 @@ class TestBaseOrder(unittest.TestCase):
       'Error placing order update- convert to market')
       
   def test_cancel_order(self):
+    if self.order.order_id == 0:
+      self.order.place_order()
     canceled = self.order.cancel_order()
     self.assertEqual(
       canceled,
@@ -65,6 +67,8 @@ class TestBaseOrder(unittest.TestCase):
       'Error canceling order')   
        
   def test_check_status(self):
+    if self.order.order_id == 0:
+      self.order.place_order()
     status = self.order.check_status()
     self.assertEqual(
       status,

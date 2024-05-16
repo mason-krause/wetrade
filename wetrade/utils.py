@@ -29,16 +29,17 @@ def pretty_print(called_from, r=None, url='', tags=[], account_key='', symbol=''
     # traceback.print_exception(type(e), e, e.__traceback__)
   if r != None:
     response = parse_response_data(r)
-    response_tags = ['response', 'error'] if 'Error' in response else ['response']
-    # pprint.pprint({
-    #   'called_from': called_from,
-    #   'tags': [*tags, *response_tags],
-    #   'account_key': account_key,
-    #   'config': settings.config_id,
-    #   'symbol': symbol,
-    #   'url': url,
-    #   'status_code': r.status_code, 
-    #   'response': response})
+    if 'Error' in response:
+      response_tags = ['response', 'error']
+      pprint.pprint({
+        'called_from': called_from,
+        'tags': [*tags, *response_tags],
+        'account_key': account_key,
+        'config': settings.config_id,
+        'symbol': symbol,
+        'url': url,
+        'status_code': r.status_code, 
+        'response': response})
 
 def log(called_from, r=None, url='', tags=[], account_key='', symbol='', message='', e=None):
   if r != None:

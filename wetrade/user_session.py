@@ -5,15 +5,17 @@ from contextlib import suppress
 from playwright.sync_api import sync_playwright
 from authlib.integrations.requests_client import OAuth1Session
 from wetrade.utils import log_in_background, parse_response_data
-from settings import use_2fa, login_method, config as default_config
+import settings
+from settings import config as default_config
 
 
 def get_text_code(authorize_url, config=default_config):
-  if login_method == 'manual':
+  headless_login = settings.headless_login if hasattr(settings, 'headless_login') else True
+  if settings.login_method == 'manual':
     print('login_url', authorize_url)
     return input('login through url and enter code:')
   else:
-    if use_2fa == True:
+    if settings.use_2fa == True:
       totp = TOTP(config['totp_secret'])
     with sync_playwright() as p:    
       log_in_background(
@@ -21,13 +23,13 @@ def get_text_code(authorize_url, config=default_config):
         tags = ['user-message'], 
         message = time.strftime('%H:%M:%S', time.localtime()) + ': Logging in')
       try:
-        browser = p.firefox.launch(headless=True)
+        browser = p.firefox.launch(headless=headless_login)
         page = browser.new_page()
         page.goto('https://us.etrade.com/etx/pxy/login')
         page.locator('#USER').fill(config['username'])
         page.locator('#password').fill(config['password'])
-        page.locator('[for="useSecurityCode"]').click()
-        if use_2fa == True:
+        if settings.use_2fa == True:
+          page.locator('[for="useSecurityCode"]').click()
           page.locator('#securityCode').fill(totp.now())
         page.locator('#mfaLogonButton').click()
         page.wait_for_url(lambda url: url != 'https://us.etrade.com/etx/pxy/login', timeout=8000)

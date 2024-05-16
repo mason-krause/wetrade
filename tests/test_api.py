@@ -12,7 +12,7 @@ class SimpleUserSession(UserSession):
 class TestAPIClient(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
-    cls.user_session = SimpleUserSession(config=config_options['snadbox'])
+    cls.user_session = SimpleUserSession(config=config_options['sandbox'])
     cls.client = APIClient(cls.user_session)
 
   def test_request_account_list(self):
