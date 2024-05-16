@@ -5,8 +5,11 @@ from contextlib import suppress
 from playwright.sync_api import sync_playwright
 from authlib.integrations.requests_client import OAuth1Session
 from wetrade.utils import log_in_background, parse_response_data
-import settings
-from settings import config as default_config
+try: 
+  import settings
+  from settings import config as default_config
+except ModuleNotFoundError:
+  from unittest.mock import MagicMock as default_config, MagicMock as settings
 
 
 def get_text_code(authorize_url, config=default_config):

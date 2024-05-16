@@ -7,6 +7,7 @@ setuptools.setup(
   author='Mason Krause',
   description='An E-trade python library built for active stock trading',
   packages = setuptools.find_packages(),
+  include_package_data=True,
   python_requires = '>=3.7',
   install_requires=[
     'authlib',

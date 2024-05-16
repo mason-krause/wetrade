@@ -4,7 +4,11 @@ import threading
 import requests
 import time
 import traceback
-import settings
+import google.cloud.logging
+try: 
+  import settings
+except ModuleNotFoundError:
+  from unittest.mock import MagicMock as settings
 
 
 def start_thread(func, name=None, args=[], kwargs={}):
@@ -40,6 +44,11 @@ def pretty_print(called_from, r=None, url='', tags=[], account_key='', symbol=''
         'url': url,
         'status_code': r.status_code, 
         'response': response})
+
+def setup_logging():
+  if settings.enable_cloud_logging == True:
+    client = google.cloud.logging.Client()
+    client.setup_logging()
 
 def log(called_from, r=None, url='', tags=[], account_key='', symbol='', message='', e=None):
   if r != None:

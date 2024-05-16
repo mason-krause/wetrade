@@ -1,8 +1,11 @@
 import unittest
 from wetrade.api import APIClient
 from wetrade.user_session import UserSession
-from settings import config_options
 from .sandbox_responses import account_responses, quote_responses, order_responses
+try:
+    from settings import config_options
+except ModuleNotFoundError:
+  from unittest.mock import MagicMock as config_options
 
 
 class SimpleUserSession(UserSession):

@@ -4,10 +4,13 @@ import pickle
 import google.cloud.storage
 import polars as pl 
 import pandas as pd
-from settings import quote_bucket
 from .quote import Quote
 from wetrade.api import APIClient
 from wetrade.utils import log_in_background, check_market_hours
+try:
+    from settings import quote_bucket
+except ModuleNotFoundError:
+  from unittest.mock import MagicMock as quote_bucket
 
 
 class DataFrameQuote(Quote):
