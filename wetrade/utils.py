@@ -8,7 +8,7 @@ import google.cloud.logging
 try: 
   import settings
 except ModuleNotFoundError:
-  from unittest.mock import MagicMock as settings
+  import wetrade.project_template.settings as settings
 
 
 def start_thread(func, name=None, args=[], kwargs={}):

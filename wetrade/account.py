@@ -21,13 +21,10 @@ class Account:
         account_key = self.account_key)
       return self.list_accounts()
 
-  def check_balance(self, type='cash'):
+  def check_balance(self):
     response, status_code = self.client.request_account_balance(account_key=self.account_key)
     try:
-      if type == 'cash':
-        balance = response['BalanceResponse']['Computed']['cashBalance']
-      else:
-        balance = response['BalanceResponse']['Computed']['accountBalance']
+      balance = response['BalanceResponse']['Computed']['cashAvailableForInvestment']
       return balance
     except Exception as e:
       log_in_background(

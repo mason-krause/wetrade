@@ -9,5 +9,4 @@ def new_project():
   ignore = ['new_project.py', '__init__.py', '__pycache__']
   for filename in files:
     if filename not in ignore:
-      new_filename = 'main.py' if filename == 'main.py.txt' else filename
-      shutil.copy2(os.path.join(src_dir, filename), os.path.join('.', new_filename))
+      shutil.copy2(os.path.join(src_dir, filename), '.')

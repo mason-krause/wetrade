@@ -59,7 +59,7 @@ balance_response = {
         'netMv': -454.22,
         'netMvLong': 0.0,
         'totalAccountValue': 0.0},
-      'cashAvailableForInvestment': 0.0,
+      'cashAvailableForInvestment': 5000.0,
       'cashAvailableForWithdrawal': 0.0,
       'cashBalance': 5000.0,
       'fundsWithheldFromPurchasePower': 0.0,

@@ -9,7 +9,8 @@ try:
   import settings
   from settings import config as default_config
 except ModuleNotFoundError:
-  from unittest.mock import MagicMock as default_config, MagicMock as settings
+  import wetrade.project_template.settings as settings
+  from wetrade.project_template.settings import config as default_config
 
 
 def get_text_code(authorize_url, config=default_config):

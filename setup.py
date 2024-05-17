@@ -1,11 +1,14 @@
 import setuptools
 
+with open('README.rst', 'r') as f:
+    long_description = f.read()
 
 setuptools.setup(
   name = 'wetrade',
   version = '0.1.0',
   author='Mason Krause',
-  description='An E-trade python library built for active stock trading',
+  description='An E-Trade python library built for active stock trading',
+  long_description = long_description,
   packages = setuptools.find_packages(),
   include_package_data=True,
   python_requires = '>=3.7',
