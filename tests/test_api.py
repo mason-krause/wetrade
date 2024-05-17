@@ -1,3 +1,4 @@
+import unittest
 from wetrade.api import APIClient
 from wetrade.user_session import UserSession
 from .sandbox_responses import account_responses, quote_responses, order_responses
