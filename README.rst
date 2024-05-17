@@ -2,7 +2,7 @@
 =========================================================================
 
 ``wetrade`` overview
----------------------------------
+--------------------
 
 ``wetrade`` is an unofficial `E-Trade API <https://developer.etrade.com/home/>`__ 
 library originally built as part of a headless trading system. It provides a lot 
@@ -70,7 +70,7 @@ wetrade usage:
 **main.py**
 
 .. code-block:: python
-  
+
   from wetrade.api import APIClient
   from wetrade.account import Account
   from wetrade.quote import Quote
