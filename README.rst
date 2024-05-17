@@ -60,14 +60,17 @@ Next, you'll get going in no time using our automated new project script!
 
 You'll now see a handful of files in your project directory including a *settings.py*
 file where you'll enter your user and API info and have the option to configure various
-``wetrade`` settings. 
+``wetrade`` settings. In this file, you'll enter your username, password, client_key, 
+and client_secret so ``wetrade`` can log into your account.
 
 In addition to *settings.py*, we've also created a *Dockerfile* for easy deployment as 
 well as a *requirements.txt* and an example file *main.py* which demonstrates some basic 
 wetrade usage:
 
 **main.py**
+
 .. code-block:: python
+  
   from wetrade.api import APIClient
   from wetrade.account import Account
   from wetrade.quote import Quote
@@ -98,7 +101,7 @@ Other info
 for most expected brokerage, server, and API errors. Our goal is to consistently
 add new functionality to support additional use cases. If you have any comments or 
 suggestions for new features, don't hesitate to create an issue or reach out to 
-`wetrade.inbox@gmail.com<mailto:wetrade.inbox@gmail.com>`__
+`wetrade.inbox@gmail.com<mailto:wetrade.inbox@gmail.com>`__.
 
 
 **Disclaimer:** *wetrade is an unofficial API library and comes with no warranty
