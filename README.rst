@@ -46,11 +46,13 @@ It's a good idea to create a new virtual environment for a new Python project
   # enter venv
   source venv/bin/activate
 
-We can then install ``wetrade`` into our venv
+We can then install ``wetrade`` into our venv, for automatic login, we'll also
+need to install our browser.
 
 .. code-block:: console
 
   pip install wetrade
+  playwright install firefox
 
 Next, you'll get going in no time using our automated new project script!
 
@@ -101,7 +103,7 @@ Other info
 for most expected brokerage, server, and API errors. Our goal is to consistently
 add new functionality to support additional use cases. If you have any comments or 
 suggestions for new features, don't hesitate to create an issue or reach out to 
-`wetrade.inbox@gmail.com<mailto:wetrade.inbox@gmail.com>`__.
+`wetrade.inbox@gmail.com <mailto:wetrade.inbox@gmail.com>`__.
 
 
 **Disclaimer:** *wetrade is an unofficial API library and comes with no warranty
