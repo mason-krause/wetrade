@@ -5,8 +5,8 @@
 --------------------
 
 ``wetrade`` is an unofficial `E-Trade API <https://developer.etrade.com/home/>`__ 
-library originally built as part of a headless trading system. It provides a lot 
-of useful built-in functionality, and was designed to be flexible and extensible
+library initially created for use in headless trading systems. It provides a lot 
+of helpful built-in functionality, and was designed to be flexible and extensible
 and to accommodate a wide variety of stock trading needs.
 
 Features include:
@@ -39,24 +39,24 @@ Install ``wetrade``:
 
 It's a good idea to create a new virtual environment for a new Python project
 
-.. code-block:: console
+.. code-block:: shell
 
   # create venv
   python3 -m venv venv
   # enter venv
   source venv/bin/activate
 
-We can then install ``wetrade`` into our venv, for automatic login, we'll also
+We can then install ``wetrade`` into our venv. For automatic login, we'll also
 need to install our browser.
 
-.. code-block:: console
+.. code-block:: shell
 
   pip install wetrade
   playwright install firefox
 
 Next, you'll get going in no time using our automated new project script!
 
-.. code-block:: console
+.. code-block:: shell
 
   python -m wetrade new-project
 
@@ -99,11 +99,13 @@ wetrade usage:
 Other info
 -------------
 
-``wetrade`` was initially designed to run headlessly and has built-in handling 
-for most expected brokerage, server, and API errors. Our goal is to consistently
-add new functionality to support additional use cases. If you have any comments or 
-suggestions for new features, don't hesitate to create an issue or reach out to 
-`wetrade.inbox@gmail.com <mailto:wetrade.inbox@gmail.com>`__.
+``wetrade`` was initially designed to run headlessly and has built-in handling for 
+most expected brokerage, server, and API errors. This and the majority of other 
+``wetrade`` functionality is entirely optional to use, and our modular structure 
+allows you to utilize as much or as little of the library as you'd like. Our goal 
+is to consistently add new functionality to support additional use cases. If you 
+have any comments or suggestions for new features, don't hesitate to create an 
+issue or reach out to: `wetrade.inbox@gmail.com <mailto:wetrade.inbox@gmail.com>`__.
 
 
 **Disclaimer:** *wetrade is an unofficial API library and comes with no warranty

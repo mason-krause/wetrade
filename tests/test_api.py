@@ -1,16 +1,12 @@
 import unittest
 from wetrade.api import APIClient
-from wetrade.user_session import UserSession
+from wetrade.user_session import SimpleUserSession
 from .sandbox_responses import account_responses, quote_responses, order_responses
 try:
   from settings import config_options
 except ModuleNotFoundError:
   from wetrade.project_template.settings import config_options
 
-
-class SimpleUserSession(UserSession):
-  def handle_request(self, http_method, args, kwargs):
-    return self.session.request(http_method, *args, **kwargs, timeout=30)
 
 class TestAPIClient(unittest.TestCase):
   @classmethod

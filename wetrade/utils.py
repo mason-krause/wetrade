@@ -22,7 +22,7 @@ def parse_response_data(r):
   
 def log_in_background(called_from, r=None, url='', tags=[], account_key='', symbol='', message='', e=None):
   start_thread(pretty_print, args=[called_from, r, url, tags, account_key, symbol, message, e])
-  if settings.enable_cloud_logging == True:
+  if hasattr(settings, 'enable_cloud_logging') and settings.enable_cloud_logging == True:
     start_thread(log, args=[called_from, r, url, tags, account_key, symbol, message, e])
 
 def pretty_print(called_from, r=None, url='', tags=[], account_key='', symbol='', message='', e=None):
@@ -33,6 +33,8 @@ def pretty_print(called_from, r=None, url='', tags=[], account_key='', symbol=''
     # traceback.print_exception(type(e), e, e.__traceback__)
   if r != None:
     response = parse_response_data(r)
+    # print('RESPONSE: ')
+    # pprint.pprint(response)
     if 'Error' in response:
       response_tags = ['response', 'error']
       pprint.pprint({
@@ -46,7 +48,7 @@ def pretty_print(called_from, r=None, url='', tags=[], account_key='', symbol=''
         'response': response})
 
 def setup_logging():
-  if settings.enable_cloud_logging == True:
+  if hasattr(settings, 'enable_cloud_logging') and settings.enable_cloud_logging == True:
     client = google.cloud.logging.Client()
     client.setup_logging()
 

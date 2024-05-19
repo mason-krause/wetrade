@@ -8,9 +8,9 @@ from .quote import Quote
 from wetrade.api import APIClient
 from wetrade.utils import log_in_background, check_market_hours
 try:
-  from settings import quote_bucket
+  import settings
 except ModuleNotFoundError:
-  from wetrade.project_template.settings import quote_bucket
+  import wetrade.project_template.settings as settings
 
 
 class DataFrameQuote(Quote):
@@ -70,18 +70,19 @@ class DataFrameQuote(Quote):
     df.to_pickle('./export/data/{}.pkl'.format(filename))
 
   def upload_quote_data(self):
-    log_in_background(
-      called_from = 'upload_quote_data',
-      tags = ['user-message'], 
-      message = '{}: Uploading quote data to Google Cloud'.format(
-        datetime.datetime.now().strftime('%H:%M:%S')))
-    filename = datetime.datetime.today().strftime('%Y_%m_%d') + '-' + self.ticker
-    df = self.data.to_pandas()
-    storage_client = google.cloud.storage.Client()
-    bucket = storage_client.bucket(quote_bucket)
-    blob = bucket.blob(filename)
-    with blob.open(mode='wb') as f:
-      pickle.dump(df, f)
+    if hasattr(settings, 'quote_bucket'):
+      log_in_background(
+        called_from = 'upload_quote_data',
+        tags = ['user-message'], 
+        message = '{}: Uploading quote data to Google Cloud'.format(
+          datetime.datetime.now().strftime('%H:%M:%S')))
+      filename = datetime.datetime.today().strftime('%Y_%m_%d') + '-' + self.ticker
+      df = self.data.to_pandas()
+      storage_client = google.cloud.storage.Client()
+      bucket = storage_client.bucket(settings.quote_bucket)
+      blob = bucket.blob(filename)
+      with blob.open(mode='wb') as f:
+        pickle.dump(df, f)
 
   def get_pd_data(self):
     return self.data.to_pandas()

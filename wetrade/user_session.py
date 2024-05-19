@@ -7,13 +7,11 @@ from authlib.integrations.requests_client import OAuth1Session
 from wetrade.utils import log_in_background, parse_response_data
 try: 
   import settings
-  from settings import config as default_config
 except ModuleNotFoundError:
   import wetrade.project_template.settings as settings
-  from wetrade.project_template.settings import config as default_config
 
 
-def get_text_code(authorize_url, config=default_config):
+def get_text_code(authorize_url, config=settings.config):
   headless_login = settings.headless_login if hasattr(settings, 'headless_login') else True
   if settings.login_method == 'manual':
     print('login_url', authorize_url)
@@ -57,7 +55,7 @@ def get_text_code(authorize_url, config=default_config):
           e = e)
         return
 
-def new_session(config=default_config):
+def new_session(config=settings.config):
   client = OAuth1Session(
     client_id = config['client_key'], 
     client_secret = config['client_secret'],
@@ -81,7 +79,7 @@ def new_session(config=default_config):
     return new_session(config)
   
 class UserSession:
-  def __init__(self, config=default_config):
+  def __init__(self, config=settings.config):
     self.config = config
     self.session = new_session(config)
     self.logged_in = True
@@ -187,3 +185,7 @@ class UserSession:
         tags = ['user-message'])
       time.sleep(3)
       return self.handle_request(http_method, args, kwargs)
+
+class SimpleUserSession(UserSession):
+  def handle_request(self, http_method, args, kwargs):
+    return self.session.request(http_method, *args, **kwargs, timeout=30)
