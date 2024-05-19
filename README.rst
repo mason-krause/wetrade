@@ -81,19 +81,46 @@ wetrade usage:
 
 
   def main():
+    # Setup logging (optional) and APIClient
     setup_logging()
     client = APIClient()
 
+    # Check out your account
     account = Account(client=client)
     print('My Account Key: ', account.account_key)
     print('My Balance: ', account.check_balance())
 
-    quote = Quote(client=client, symbol='AAPL')
-    print('Last Quote Price: ', quote.get_last_price())
+    # Get a stock quote
+    quote = Quote(client=client, symbol='IBM')
+    print(f'Last {quote.symbol} Quote Price: ', quote.get_last_price())
 
-
-  if __name__ == '__main__':
-    main()
+    # Place some orders and stuff
+    order1 = LimitOrder(
+        client = client,
+        account_key = account.account_key,
+        symbol = 'NVDA',
+        action = 'BUY',
+        quantity = 1,
+        price = 50.00)
+    order1.place_order()
+    order1.run_when_status(
+        'CANCELLED', 
+        func = print, 
+        func_args = ['Test message'])
+    
+    order2 = LimitOrder(
+        client = client,
+        account_key = account.account_key,
+        symbol = 'NFLX',
+        action = 'BUY',
+        quantity = 1,
+        price = 50.00)
+    order2.place_order()
+    order2.run_when_status(
+        'CANCELLED',
+        order1.cancel_order)
+    
+    order2.cancel_order()
 
 
 Other info
