@@ -4,9 +4,13 @@ build:
   os: "ubuntu-22.04"
   tools:
     python: "3.11"
-  jobs:
-    post_create_environment:
-      - python -m pip install sphinx_rtd_theme xmltodict
+
+python:
+  install:
+    - method: pip
+      path: .
+      extra_requirements:
+        - dev
 
 # sphinx:
 #   configuration: docs/conf.py

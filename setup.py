@@ -22,4 +22,7 @@ setuptools.setup(
     'google-cloud-storage', 
     'polars', 
     'pandas', 
-    'pyarrow'])
+    'pyarrow'],
+    extras_require={
+      'dev': [
+        'sphinx_rtd_theme']},)
