@@ -7,7 +7,10 @@ from .lookup_msg import lookup_error_msg
 
 # Stop order that converts to a market order if rejected or out of range 
 class ConvertingStopOrder(StopOrder):
-  def handle_rejected_order(self):
+  '''
+  A stop order that converts to a limit order when rejected or current price is above stop price for a sell order or when current price is below stop price for a buy order
+  '''
+  def __handle_rejected_order(self):
     self.updating = True
     self.client_order_id = random.randint(1000000000, 9999999999)
     self.order_type =  'MARKET'
@@ -21,7 +24,7 @@ class ConvertingStopOrder(StopOrder):
       symbol = self.symbol,
       message = '{}: Order {} REJECTED , replacing as MARKET order (Account: {})'.format(time.strftime('%H:%M:%S', time.localtime()), self.order_id, self.account_key))
     
-  def modify_order(self, action_type='preview'):
+  def __modify_order(self, action_type='preview'):
     if action_type == 'preview':
       response, status_code = self.client.request_order_preview(account_key=self.account_key, order_data=self.preview_order_request)
       response_key = 'PreviewOrderResponse'
@@ -46,15 +49,15 @@ class ConvertingStopOrder(StopOrder):
       error_code = response['Error']['code']
       error_msg = lookup_error_msg(error_code=error_code, msg_ref=msg_ref, order_id=self.order_id)
       log_in_background(
-        called_from = 'modify_order',
+        called_from = '__modify_order',
         tags = ['user-message'], 
         message = time.strftime('%H:%M:%S', time.localtime()) + error_msg,
         account_key = self.account_key,
         symbol = self.symbol)
       if error_code in [1508, 163, 1524]:
         time.sleep(1)
-        return self.modify_order(action_type)
+        return self.__modify_order(action_type)
       elif error_code in [2084, 2085]:
         self.order_type =  'MARKET'
         self.preview_order_request['PreviewOrderRequest']['Order']['priceType'] = 'MARKET'
-        return self.modify_order(action_type)
+        return self.__modify_order(action_type)

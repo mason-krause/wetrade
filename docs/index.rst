@@ -7,6 +7,11 @@
 
   getting-started
   settings
+  account
+  quote
+  order
+  user-session
+  api-client
 
 Indices and tables
 ==================

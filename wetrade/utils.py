@@ -87,7 +87,8 @@ def log(called_from, r=None, url='', tags=[], account_key='', symbol='', message
       'tb_info': tb_str})
     
 # This doesn't really belong here but E-trade doesn't have market hours endpoint
-def check_market_hours(day_str=time.strftime('%Y-%m-%d', time.localtime())):
+def check_market_hours(day_str=''):
+  day_str = time.strftime('%Y-%m-%d', time.localtime()) if day_str == '' else day_str
   key = settings.hours_key if hasattr(settings, 'hours_key') else 'PKNL4NZJEHKGDPLL8CVY'
   secret = settings.hours_secret if hasattr(settings, 'hours_secret') else 'sxMOohHeLG6DODKv0tu237flYuwVaM0rvoea0M2F'
   params = {'start': day_str, 'end': day_str}

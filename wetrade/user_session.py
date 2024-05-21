@@ -11,7 +11,8 @@ except ModuleNotFoundError:
   import wetrade.project_template.settings as settings
 
 
-def get_text_code(authorize_url, config=settings.config):
+def get_text_code(authorize_url, config={}):
+  config = settings.config if config == {} else config
   headless_login = settings.headless_login if hasattr(settings, 'headless_login') else True
   if settings.login_method == 'manual':
     print('login_url', authorize_url)
@@ -55,7 +56,8 @@ def get_text_code(authorize_url, config=settings.config):
           e = e)
         return
 
-def new_session(config=settings.config):
+def new_session(config={}):
+  config = settings.config if config == {} else config
   client = OAuth1Session(
     client_id = config['client_key'], 
     client_secret = config['client_secret'],
@@ -79,9 +81,9 @@ def new_session(config=settings.config):
     return new_session(config)
   
 class UserSession:
-  def __init__(self, config=settings.config):
-    self.config = config
-    self.session = new_session(config)
+  def __init__(self, config={}):
+    self.config = settings.config if config == {} else config
+    self.session = new_session(self.config)
     self.logged_in = True
     
   def login(self):

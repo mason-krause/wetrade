@@ -1,11 +1,12 @@
 .. _settings:
 
 ==================================
-``wetrade`` settings
+Configuring ``wetrade`` settings
 ==================================
 
 Check out the information below for details on configuring your ``wetrade`` 
-settings
+settings. As detailed below, ``wetrade`` relies on a *settings.py* file in
+the root directory of your project. 
 
 ++++++++++++++++++++++++++++++++++++++
 Settings introduction

@@ -14,6 +14,12 @@ except ModuleNotFoundError:
 
 
 class DataFrameQuote(Quote):
+  '''
+  A Quote that uses a DataFrame to keep track of quote details and enable complex calculations
+
+  :param APIClient client: your :ref:`APIClient <api_client>`
+  :param str symbol: the symbol of your security
+  '''
   def __init__(self, client:APIClient, symbol):
     super().__init__()
     self.data = pl.DataFrame(schema={ #maybe use numpy array instead of polars df
@@ -31,12 +37,12 @@ class DataFrameQuote(Quote):
       '10s_average': pl.Float64})
     self.smoothed_price = 0.0
 
-  def monitor_quote(self):
+  def __monitor_quote(self):
     if self.monitoring_active == False:
       market_close = check_market_hours()['close']
       if time.strftime('%H:%M', time.localtime()) > market_close:
         log_in_background(
-          called_from = 'monitor_quote',
+          called_from = '__monitor_quote',
           tags = ['user-message'], 
           symbol = self.symbol,
           message = '{}: Markets are closed'.format(time.strftime('%H:%M:%S', time.localtime())))
@@ -65,11 +71,17 @@ class DataFrameQuote(Quote):
       time.sleep(.5)
 
   def export_data(self):
+    '''
+    Exports a DataFrame containing your quote data as a .pkl file saved to *./export/data*
+    '''
     filename = datetime.datetime.today().strftime('%Y_%m_%d') + '-' + self.ticker
     df = self.data.to_pandas()
     df.to_pickle('./export/data/{}.pkl'.format(filename))
 
   def upload_quote_data(self):
+    '''
+    Uploads a DataFrame to a Google Cloud Storage bucket specified in :ref:`settings.py <settings>`
+    '''
     if hasattr(settings, 'quote_bucket'):
       log_in_background(
         called_from = 'upload_quote_data',
@@ -85,4 +97,7 @@ class DataFrameQuote(Quote):
         pickle.dump(df, f)
 
   def get_pd_data(self):
+    '''
+    Returns a pandas DataFrame containing your quote data
+    '''
     return self.data.to_pandas()

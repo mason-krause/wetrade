@@ -14,7 +14,7 @@ Setting up E-Trade API Access
 In order to access the E-Trade API, you'll need to follow the 4 steps detailed on the
 `E-Trade developer getting started page <https://developer.etrade.com/getting-started/>`__
 then request an API key through `the linked page <https://us.etrade.com/etx/ris/apikey/>`__.
-It's also recommended that you enable real-time data in the 
+It's also recommended that you enable real-time data in 
 `the subscription center <https://us.etrade.com/etx/pxy/my-profile/subscription-center/>`__
 so that you don't receive delayed quotes. 
 
