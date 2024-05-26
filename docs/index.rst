@@ -17,7 +17,6 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
 
 **Disclaimer:** *wetrade is an unofficial API library and comes with no warranty

@@ -6,8 +6,8 @@ def lookup_error_msg(error_code, msg_ref='with', order_id=0):
   msg_dict = {
     1508: f': Price unavailable {msg_ref} (Order ID: {order_id}), waiting 1 sec then retrying',
     163: f': Processing error {msg_ref} (Order ID: {order_id}), waiting 1 sec then retrying',
-    163: f': Stop price out of range (Order ID: {order_id})- changing to market order and replacing',
-    163: f': Stop price out of range (Order ID: {order_id})- changing to market order and replacing',
+    2084: f': Stop price out of range (Order ID: {order_id})- changing to market order and replacing',
+    2085: f': Stop price out of range (Order ID: {order_id})- changing to market order and replacing',
     1524: f': Order {order_id} still updating, waiting 1 sec then retrying' }
   if error_code in msg_dict:
     return msg_dict[error_code]

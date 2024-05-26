@@ -4,7 +4,10 @@ import threading
 import requests
 import time
 import traceback
+import os
+import ast
 import google.cloud.logging
+from google.cloud import secretmanager
 try: 
   import settings
 except ModuleNotFoundError:
@@ -99,3 +102,15 @@ def check_market_hours(day_str=''):
     return {'open': '00:00', 'close': '00:00'}
   else:
     return {'open': results[0]['open'], 'close': results[0]['close']}
+  
+def get_gcloud_secret(secret_id, version_id='latest'):
+  gcloud_file = os.getenv('GOOGLE_APPLICATION_CREDENTIALS', '!no-gcloud-file!')
+  if gcloud_file != '!no-gcloud-file!':
+    with open(gcloud_file) as f:
+      data = f.read()
+    gcloud_data = ast.literal_eval(data)
+    project_id = gcloud_data['project_id']
+    secret_name = f'projects/{project_id}/secrets/{secret_id}/versions/{version_id}'
+    client = secretmanager.SecretManagerServiceClient()
+    response = client.access_secret_version(name=secret_name)
+    return response.payload.data.decode('UTF-8')

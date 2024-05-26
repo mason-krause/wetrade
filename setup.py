@@ -20,6 +20,7 @@ setuptools.setup(
     'pyotp==2.9.0',
     'google-cloud-logging', 
     'google-cloud-storage', 
+    'google-cloud-secret-manager',
     'polars', 
     'pandas', 
     'pyarrow'],

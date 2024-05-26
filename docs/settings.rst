@@ -50,6 +50,118 @@ This file contains your account information and other important global
 Please note: the **config = config_options[config_id]** line is required to set
 your configuration.
 
+---------------------------------------------------
+But I don't want to store my password in plain text
+---------------------------------------------------
+
+Fret not my friend, we've got you covered! We've thought of a few easy options 
+to avoid storing passwords in plain text, and because *settings.py* is a python
+file, you could potentially come up with many additional ways of accessing your
+password.  
+
+**Using Google Cloud Secret Manager**
+
+We've integrated `Google Cloud Secret Manager 
+<https://cloud.google.com/security/products/secret-manager/>`__ to provide a 
+secure way to access passwords stored on this free service that's linked to 
+your Google Account. Like other integrated Google Cloud functionality, you'll
+need to export a json key from a `Google Cloud Service Account 
+<https://console.cloud.google.com/iam-admin/serviceaccounts/>`__ with the
+'Secret Manager Secret Accessor' role assigned and link to that file with the
+GOOGLE_APPLICATION_CREDENTIALS environment variable (see example below). To
+prevent having to set this environment variable every time you start your
+program, you may want to set your GOOGLE_APPLICATION_CREDENTIALS path in the
+*venv/bin/activate* file you use to enter your venv.
+
+**Setting your GOOGLE_APPLICATION_CREDENTIALS path to ./gcloud-creds.json**
+
+.. code-block:: shell
+
+  export GOOGLE_APPLICATION_CREDENTIALS=gcloud-creds.json
+
+Once your json file is in place, you can access Google Cloud secrets (eg: 
+'my-secret-id') in your *settings.py* file:
+
+.. code-block:: python
+
+  from wetrade.utils import get_gcloud_secret
+
+
+  # E-Trade settings
+  login_method = 'auto' # 'auto', 'manual'
+  use_2fa = False # needed to disable SMS auth - requires totp_secret
+  config_id = 'sandbox'
+  config_options = {
+  'sandbox':{
+    'base_url': 'https://apisb.etrade.com/',
+    'client_key': 'SANDBOX_CLIENT_KEY',
+    'client_secret': 'SANDBOX_CLIENT_SECRET',
+    'username': 'USERNAME',
+    'password': get_gcloud_secret('your-secret-id'),
+    'totp_secret': 'TOTP_SECRET'},
+  'prod':{
+    'base_url': 'https://api.etrade.com/',
+    'client_key': 'PROD_CLIENT_KEY',
+    'client_secret': 'PROD_CLIENT_SECRET',
+    'username': 'USERNAME',
+    'password': get_gcloud_secret('your-secret-id'),
+    'totp_secret': 'TOTP_SECRET'}}
+  # Google Cloud settings (optional)
+  # need GOOGLE_APPLICATION_CREDENTIALS env var set to json path
+  enable_cloud_logging = False
+  quote_bucket = 'your-quote-bucket'
+
+  config = config_options[config_id]
+
+**Using environment variables**
+
+For certain situations including cloud deployment, it may make sense to set your
+passwords in environment variables. Please note: we DO NOT recommended saving 
+passwords in your shell config (eg: .bashrc, .profile, .zshrc) or in your
+venv/bin/activate file as this is as or more insecure as storing your passwords
+directly in *settings.py* and, if you have to use environment variables locally,
+we'd recommended only setting your environment variables in your individual 
+terminal session as demonstrated below:
+
+*Setting an environment variable*
+
+.. code-block:: shell
+
+  export ETRADE_PASS=my-password
+
+You can then access this environment variable in your *settings.py* file:
+
+.. code-block:: python
+
+  import os 
+
+
+  # E-Trade settings
+  login_method = 'auto' # 'auto', 'manual'
+  use_2fa = False # needed to disable SMS auth - requires totp_secret
+  config_id = 'sandbox'
+  config_options = {
+  'sandbox':{
+    'base_url': 'https://apisb.etrade.com/',
+    'client_key': 'SANDBOX_CLIENT_KEY',
+    'client_secret': 'SANDBOX_CLIENT_SECRET',
+    'username': 'USERNAME',
+    'password': os.environ['ETRADE_PASS'],
+    'totp_secret': 'TOTP_SECRET'},
+  'prod':{
+    'base_url': 'https://api.etrade.com/',
+    'client_key': 'PROD_CLIENT_KEY',
+    'client_secret': 'PROD_CLIENT_SECRET',
+    'username': 'USERNAME',
+    'password': os.environ['ETRADE_PASS'],
+    'totp_secret': 'TOTP_SECRET'}}
+  # Google Cloud settings (optional)
+  # need GOOGLE_APPLICATION_CREDENTIALS env var set to json path
+  enable_cloud_logging = False
+  quote_bucket = 'your-quote-bucket'
+
+  config = config_options[config_id]
+
 ++++++++++++++++++++++++++++++++++++++
 Definitions
 ++++++++++++++++++++++++++++++++++++++
