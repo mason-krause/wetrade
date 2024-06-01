@@ -1,7 +1,8 @@
 import time
 import datetime
 from wetrade.api import APIClient
-from wetrade.utils import log_in_background, check_market_hours, start_thread
+from wetrade.market_hours import MarketHours
+from wetrade.utils import log_in_background, start_thread
 
 class Quote:
   '''
@@ -15,6 +16,7 @@ class Quote:
     self.symbol = symbol
     self.last_price = 0.0
     self.monitoring_active = False
+    self.market_hours = MarketHours()
 
   def get_quote(self):
     '''
@@ -49,16 +51,9 @@ class Quote:
 
   def __monitor_quote(self):
     if self.monitoring_active == False:
-      market_close = check_market_hours()['close']
-      if time.strftime('%H:%M', time.localtime()) > market_close:
-        log_in_background(
-          called_from = '__monitor_quote',
-          tags = ['user-message'], 
-          symbol = self.symbol,
-          message = '{}: Markets are closed'.format(time.strftime('%H:%M:%S', time.localtime())))
-      else:
+      if self.market_hours.market_has_closed() == False:
         self.monitoring_active = True
-      while self.monitoring_active == True and time.strftime('%H:%M', time.localtime()) < market_close:
+      while self.monitoring_active == True and self.market_hours.market_has_closed() == False:
         quote_data = self.get_quote()
         self.last_price = quote_data['All']['lastTrade']
         time.sleep(.5)

@@ -17,6 +17,7 @@ setuptools.setup(
     'playwright',
     'urllib3==1.26.16',
     'xmltodict',
+    'pytz',
     'pyotp==2.9.0',
     'google-cloud-logging', 
     'google-cloud-storage', 

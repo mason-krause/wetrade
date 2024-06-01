@@ -42,7 +42,7 @@ This file contains your account information and other important global
     'totp_secret': 'TOTP_SECRET'}}
   # Google Cloud settings (optional)
   # need GOOGLE_APPLICATION_CREDENTIALS env var set to json path
-  enable_cloud_logging = False
+  enable_logging = False
   quote_bucket = 'your-quote-bucket'
 
   config = config_options[config_id]
@@ -64,23 +64,11 @@ password.
 We've integrated `Google Cloud Secret Manager 
 <https://cloud.google.com/security/products/secret-manager/>`__ to provide a 
 secure way to access passwords stored on this free service that's linked to 
-your Google Account. Like other integrated Google Cloud functionality, you'll
-need to export a json key from a `Google Cloud Service Account 
-<https://console.cloud.google.com/iam-admin/serviceaccounts/>`__ with the
-'Secret Manager Secret Accessor' role assigned and link to that file with the
-GOOGLE_APPLICATION_CREDENTIALS environment variable (see example below). To
-prevent having to set this environment variable every time you start your
-program, you may want to set your GOOGLE_APPLICATION_CREDENTIALS path in the
-*venv/bin/activate* file you use to enter your venv.
+your Google Account. 
 
-**Setting your GOOGLE_APPLICATION_CREDENTIALS path to ./gcloud-creds.json**
-
-.. code-block:: shell
-
-  export GOOGLE_APPLICATION_CREDENTIALS=gcloud-creds.json
-
-Once your json file is in place, you can access Google Cloud secrets (eg: 
-'my-secret-id') in your *settings.py* file:
+After following the :ref:`instructions for setting up your Google Cloud account 
+<gcloud>`, you can access Google Cloud secrets (eg: 'my-secret-id') in your 
+*settings.py* file:
 
 .. code-block:: python
 
@@ -108,7 +96,7 @@ Once your json file is in place, you can access Google Cloud secrets (eg:
     'totp_secret': 'TOTP_SECRET'}}
   # Google Cloud settings (optional)
   # need GOOGLE_APPLICATION_CREDENTIALS env var set to json path
-  enable_cloud_logging = False
+  enable_logging = False
   quote_bucket = 'your-quote-bucket'
 
   config = config_options[config_id]
@@ -157,7 +145,7 @@ You can then access this environment variable in your *settings.py* file:
     'totp_secret': 'TOTP_SECRET'}}
   # Google Cloud settings (optional)
   # need GOOGLE_APPLICATION_CREDENTIALS env var set to json path
-  enable_cloud_logging = False
+  enable_logging = False
   quote_bucket = 'your-quote-bucket'
 
   config = config_options[config_id]
@@ -213,14 +201,15 @@ Optional settings
 ---------------------------------
 
 
-.. py:data:: enable_cloud_logging
+.. py:data:: enable_logging
   :type: bool
   :value: False
 
-You can use this flag to enable Google Cloud Logging integration. This allows
-you to access and store logs from Google's convenient web UI which makes it
-easy to keep track of your trading activity especially when using multiple
-accounts. 
+You can use this flag to enable logging using python's *logging* module
+if you've set up :ref:`Google Cloud integration <gcloud>` and run 
+*setup_cloud_logging()*, this allows you to store and access logs in Google's
+convenient web UI which makes it easy to keep track of your trading activity 
+especially when using multiple accounts. 
 
 .. py:data:: quote_bucket
   :type: str

@@ -6,7 +6,7 @@ import polars as pl
 import pandas as pd
 from .quote import Quote
 from wetrade.api import APIClient
-from wetrade.utils import log_in_background, check_market_hours
+from wetrade.utils import log_in_background
 try:
   import settings
 except ModuleNotFoundError:
@@ -39,16 +39,9 @@ class DataFrameQuote(Quote):
 
   def __monitor_quote(self):
     if self.monitoring_active == False:
-      market_close = check_market_hours()['close']
-      if time.strftime('%H:%M', time.localtime()) > market_close:
-        log_in_background(
-          called_from = '__monitor_quote',
-          tags = ['user-message'], 
-          symbol = self.symbol,
-          message = '{}: Markets are closed'.format(time.strftime('%H:%M:%S', time.localtime())))
-      else:
+      if self.market_hours.market_has_closed() == False:
         self.monitoring_active = True
-      while self.monitoring_active == True and time.strftime('%H:%M', time.localtime()) < market_close:
+      while self.monitoring_active == True and self.market_hours.market_has_closed() == False:
         quote_data = self.get_quote()
         self.last_price = quote_data['All']['lastTrade']
         self.data.extend(pl.DataFrame({

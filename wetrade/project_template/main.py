@@ -2,12 +2,12 @@ from wetrade.api import APIClient
 from wetrade.account import Account
 from wetrade.quote import Quote
 from wetrade.order import LimitOrder
-from wetrade.utils import setup_logging
+from wetrade.utils import setup_cloud_logging
 
 
 def main():
-  # Setup logging (optional) and APIClient
-  setup_logging()
+  # Setup cloud logging (optional) and APIClient
+  setup_cloud_logging()
   client = APIClient()
 
   # Check out your account

@@ -80,7 +80,7 @@ class BaseOrder:
         message = time.strftime('%H:%M:%S', time.localtime()) + error_msg,
         account_key = self.account_key,
         symbol = self.symbol)
-      if error_code in [1508, 163, 1524]:
+      if error_code in (1508, 163, 1524):
         time.sleep(1)
         return self.__modify_order(action_type)
 
@@ -176,7 +176,7 @@ class BaseOrder:
     msg_num = 0
     with suppress(Exception):
       msg_num = response['CancelOrderResponse']['Messages']['Message'][0]['code']
-    if msg_num in [5011, 4186]:
+    if msg_num in (5011, 4186):
       log_in_background(
         called_from = 'cancel_order',
         tags = ['user-message'], 

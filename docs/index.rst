@@ -10,8 +10,12 @@
   account
   quote
   order
+  market-hours
+  gcloud
+  deployment
   user-session
   api-client
+  trading-example
 
 Indices and tables
 ==================
@@ -20,7 +24,7 @@ Indices and tables
 * :ref:`search`
 
 **Disclaimer:** *wetrade is an unofficial API library and comes with no warranty
-of any kind. It is in no way endorsed by or affiliated with E*TRADE Financial 
+of any kind. It is in no way endorsed by or affiliated with E\*TRADE Financial 
 or any associated organization. Make sure to read and understand the terms of 
 service of the underlying API before using this package. This authors accept 
 no responsibility for any damage that might stem from use of this package. 

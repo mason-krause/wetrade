@@ -54,10 +54,10 @@ class ConvertingStopOrder(StopOrder):
         message = time.strftime('%H:%M:%S', time.localtime()) + error_msg,
         account_key = self.account_key,
         symbol = self.symbol)
-      if error_code in [1508, 163, 1524]:
+      if error_code in (1508, 163, 1524):
         time.sleep(1)
         return self.__modify_order(action_type)
-      elif error_code in [2084, 2085]:
+      elif error_code in (2084, 2085):
         self.order_type =  'MARKET'
         self.preview_order_request['PreviewOrderRequest']['Order']['priceType'] = 'MARKET'
         return self.__modify_order(action_type)

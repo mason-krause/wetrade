@@ -25,7 +25,7 @@ def parse_response_data(r):
   
 def log_in_background(called_from, r=None, url='', tags=[], account_key='', symbol='', message='', e=None):
   start_thread(pretty_print, args=[called_from, r, url, tags, account_key, symbol, message, e])
-  if hasattr(settings, 'enable_cloud_logging') and settings.enable_cloud_logging == True:
+  if hasattr(settings, 'enable_logging') and settings.enable_logging == True:
     start_thread(log, args=[called_from, r, url, tags, account_key, symbol, message, e])
 
 def pretty_print(called_from, r=None, url='', tags=[], account_key='', symbol='', message='', e=None):
@@ -36,8 +36,6 @@ def pretty_print(called_from, r=None, url='', tags=[], account_key='', symbol=''
     # traceback.print_exception(type(e), e, e.__traceback__)
   if r != None:
     response = parse_response_data(r)
-    # print('RESPONSE: ')
-    # pprint.pprint(response)
     if 'Error' in response:
       response_tags = ['response', 'error']
       pprint.pprint({
@@ -50,8 +48,8 @@ def pretty_print(called_from, r=None, url='', tags=[], account_key='', symbol=''
         'status_code': r.status_code, 
         'response': response})
 
-def setup_logging():
-  if hasattr(settings, 'enable_cloud_logging') and settings.enable_cloud_logging == True:
+def setup_cloud_logging():
+  if hasattr(settings, 'enable_logging') and settings.enable_logging == True:
     client = google.cloud.logging.Client()
     client.setup_logging()
 
@@ -88,20 +86,6 @@ def log(called_from, r=None, url='', tags=[], account_key='', symbol='', message
       'config': settings.config_id,
       'message': str(e),
       'tb_info': tb_str})
-    
-# This doesn't really belong here but E-trade doesn't have market hours endpoint
-def check_market_hours(day_str=''):
-  day_str = time.strftime('%Y-%m-%d', time.localtime()) if day_str == '' else day_str
-  key = settings.hours_key if hasattr(settings, 'hours_key') else 'PKNL4NZJEHKGDPLL8CVY'
-  secret = settings.hours_secret if hasattr(settings, 'hours_secret') else 'sxMOohHeLG6DODKv0tu237flYuwVaM0rvoea0M2F'
-  params = {'start': day_str, 'end': day_str}
-  headers = {'APCA-API-KEY-ID': key, 'APCA-API-SECRET-KEY': secret}
-  r = requests.get('https://paper-api.alpaca.markets/v2/calendar', params=params, headers=headers)
-  results = parse_response_data(r)
-  if results == []:
-    return {'open': '00:00', 'close': '00:00'}
-  else:
-    return {'open': results[0]['open'], 'close': results[0]['close']}
   
 def get_gcloud_secret(secret_id, version_id='latest'):
   gcloud_file = os.getenv('GOOGLE_APPLICATION_CREDENTIALS', '!no-gcloud-file!')

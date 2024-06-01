@@ -77,12 +77,12 @@ wetrade usage:
   from wetrade.account import Account
   from wetrade.quote import Quote
   from wetrade.order import LimitOrder
-  from wetrade.utils import setup_logging
+  from wetrade.utils import setup_cloud_logging
 
 
   def main():
-    # Setup logging (optional) and APIClient
-    setup_logging()
+    # Setup cloud logging (optional) and APIClient
+    setup_cloud_logging()
     client = APIClient()
 
     # Check out your account
@@ -136,7 +136,7 @@ issue or reach out to: `wetrade.inbox@gmail.com <mailto:wetrade.inbox@gmail.com>
 
 
 **Disclaimer:** *wetrade is an unofficial API library and comes with no warranty
-of any kind. It is in no way endorsed by or affiliated with E*TRADE Financial 
+of any kind. It is in no way endorsed by or affiliated with E\*TRADE Financial 
 or any associated organization. Make sure to read and understand the terms of 
 service of the underlying API before using this package. This authors accept 
 no responsibility for any damage that might stem from use of this package. 

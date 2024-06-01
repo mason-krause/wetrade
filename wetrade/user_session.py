@@ -85,7 +85,19 @@ class UserSession:
     self.config = settings.config if config == {} else config
     self.session = new_session(self.config)
     self.logged_in = True
-    
+
+  def renew_token(self):
+    self.logged_in = False
+    r = self.session.get(url='https://api.etrade.com/oauth/renew_access_token')
+    if r.status_code != 200:
+      self.logged_in = True
+    else:
+      log_in_background(
+        called_from = 'renew_token',
+        tags = ['user-message'], 
+        message = time.strftime('%H:%M:%S', time.localtime()) + ': Error renewing access token')
+      self.login()
+
   def login(self):
     self.logged_in = False
     try:
