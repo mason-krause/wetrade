@@ -15,7 +15,7 @@ Features include:
 * Easy setup and configuration
 * Quotes, account info, and custom ordering
 * Callback functionality for order and quote updates 
-* Automated setup for new projects  
+* Convenient tools to check and localize trading hours 
 * Easy deployment with Docker template
 * Robust logging with optional Google Cloud integration
 

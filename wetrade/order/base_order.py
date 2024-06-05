@@ -236,7 +236,7 @@ class BaseOrder:
     :param dict kwargs: a dict containing kwargs for your function
     '''
     waiting = True
-    stop_for = ['CANCELLED','EXECUTED','EXPIRED']
+    stop_for = ('CANCELLED','EXECUTED','EXPIRED')
     while waiting:
       if self.updating == False:
         order_status = self.check_status()
