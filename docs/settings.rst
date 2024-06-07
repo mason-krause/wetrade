@@ -104,18 +104,28 @@ After following the :ref:`instructions for setting up your Google Cloud account
 **Using environment variables**
 
 For certain situations including cloud deployment, it may make sense to set your
-passwords in environment variables. Please note: we DO NOT recommended saving 
+passwords in environment variables. Please note: we DO NOT recommend saving 
 passwords in your shell config (eg: .bashrc, .profile, .zshrc) or in your
-venv/bin/activate file as this is as or more insecure as storing your passwords
-directly in *settings.py* and, if you have to use environment variables locally,
-we'd recommended only setting your environment variables in your individual 
-terminal session as demonstrated below:
+venv/bin/activate file as this is no more secure than storing your passwords
+directly in *settings.py* . If you have to use environment variables locally,
+we'd recommended hiding your password env var from your shell history with a 
+pattern and then setting environment variables in your individual terminal 
+session as demonstrated below:
+
+*Hiding a pattern from your shell history*
+
+.. code-block:: shell
+
+  # bash / linux
+  export HISTIGNORE="*WETRADE_VAR*" 
+  # zsh / mac
+  export HISTORY_IGNORE="*WETRADE_VAR*" 
 
 *Setting an environment variable*
 
 .. code-block:: shell
 
-  export ETRADE_PASS=my-password
+  export WETRADE_VAR=my-password
 
 You can then access this environment variable in your *settings.py* file:
 
@@ -134,14 +144,14 @@ You can then access this environment variable in your *settings.py* file:
     'client_key': 'SANDBOX_CLIENT_KEY',
     'client_secret': 'SANDBOX_CLIENT_SECRET',
     'username': 'USERNAME',
-    'password': os.environ['ETRADE_PASS'],
+    'password': os.environ['WETRADE_VAR'],
     'totp_secret': 'TOTP_SECRET'},
   'prod':{
     'base_url': 'https://api.etrade.com/',
     'client_key': 'PROD_CLIENT_KEY',
     'client_secret': 'PROD_CLIENT_SECRET',
     'username': 'USERNAME',
-    'password': os.environ['ETRADE_PASS'],
+    'password': os.environ['WETRADE_VAR'],
     'totp_secret': 'TOTP_SECRET'}}
   # Google Cloud settings (optional)
   # need GOOGLE_APPLICATION_CREDENTIALS env var set to json path
