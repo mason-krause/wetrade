@@ -25,13 +25,14 @@ class BaseOrder:
     self.quantity = quantity
     self.price = price
     self.order_type = self.order_type if hasattr(self, 'order_type') else 'LIMIT'
+    self.security_type = self.security_type if hasattr(self, 'security_type') else 'EQ'
     self.client_order_id = random.randint(1000000000, 9999999999)
     self.order_id = 0
     self.updating = False
     self.status = ''
     self.preview_order_request = {
       'PreviewOrderRequest': {
-        'orderType': 'EQ', # [EQ, OPTN, SPREADS, BUY_WRITES, BUTTERFLY, IRON_BUTTERFLY, CONDOR, IRON_CONDOR, MF, MMF]
+        'orderType': self.security_type, # [EQ, OPTN, SPREADS, BUY_WRITES, BUTTERFLY, IRON_BUTTERFLY, CONDOR, IRON_CONDOR, MF, MMF]
         'clientOrderId': self.client_order_id,
         'Order': {
           'allOrNone': 'false',

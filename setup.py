@@ -27,5 +27,6 @@ setuptools.setup(
     'pyarrow'],
     extras_require={
       'dev': [
+        'pytest',
         'sphinx',
         'sphinx_rtd_theme']},)

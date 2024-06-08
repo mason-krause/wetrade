@@ -126,6 +126,9 @@ usage:
     order2.cancel_order()
 
 
+  if __name__ == '__main__':
+    main()
+
 Other info
 -------------
 
@@ -141,6 +144,6 @@ issue or reach out to: `wetrade.inbox@gmail.com <mailto:wetrade.inbox@gmail.com>
 **Disclaimer:** *wetrade is an unofficial API library and comes with no warranty
 of any kind. It is in no way endorsed by or affiliated with E\*TRADE Financial 
 or any associated organization. Make sure to read and understand the terms of 
-service of the underlying API before using this package. This authors accept 
+service of the underlying API before using this package. The authors accept 
 no responsibility for any damage that might stem from use of this package. 
 See the LICENSE file for more details.*
