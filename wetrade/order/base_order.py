@@ -50,6 +50,7 @@ class BaseOrder:
             'quantityType': 'QUANTITY',
             'quantity': self.quantity}}}}
     self.place_order_request = {}
+    self.disable_await_status = False
 
   def __modify_order(self, action_type='preview'):
     if action_type == 'preview':
@@ -238,7 +239,7 @@ class BaseOrder:
     '''
     waiting = True
     stop_for = ('CANCELLED','EXECUTED','EXPIRED')
-    while waiting:
+    while waiting and self.disable_await_status == False:
       if self.updating == False:
         order_status = self.check_status()
         if order_status == 'REJECTED': # special handling for rejected orders

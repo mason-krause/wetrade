@@ -58,33 +58,3 @@ quote_response = {
       'dateTime': '16:00:00 EDT 06-20-2012',
       'dateTimeUTC': 1340222400,
       'quoteStatus': 'REALTIME'}]}}
-
-multiquote_responses = [{
-  'QuoteResponse': {
-    'QuoteData': [
-    { 'All': {
-        'lastTrade': 177.51,
-        'open': 178.89,},
-      'Product': {
-        'securityType': 'EQ',
-        'symbol': 'TSLA' }}, 
-    { 'All': {
-        'lastTrade': 877.51,
-        'open': 878.89,},
-      'Product': {
-        'securityType': 'EQ',
-        'symbol': 'NVDA' }}]}}, {
-  'QuoteResponse': {
-    'QuoteData': [
-    { 'All': {
-        'lastTrade': 207.51,
-        'open': 178.89,},
-      'Product': {
-        'securityType': 'EQ',
-        'symbol': 'TSLA' }}, 
-    { 'All': {
-        'lastTrade': 907.51,
-        'open': 878.89,},
-      'Product': {
-        'securityType': 'EQ',
-        'symbol': 'NVDA' }}]}}]

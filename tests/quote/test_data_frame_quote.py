@@ -1,10 +1,9 @@
-import unittest
+from .test_quote import TestQuote
 from wetrade.quote import DataFrameQuote
 from tests.mock_api import MockAPIClient as APIClient
 
 
-class TestDataFrameQuote(unittest.TestCase):
-  @classmethod
-  def setUpClass(cls):
+class TestDataFrameQuote(TestQuote):
+  def setup_class(self):
     client = APIClient()
-    cls.quote = DataFrameQuote(client=client, symbol='GOOG')
+    self.quote = DataFrameQuote(client=client, symbol='GOOG')

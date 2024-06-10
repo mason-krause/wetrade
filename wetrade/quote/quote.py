@@ -65,20 +65,20 @@ class Quote:
     '''
     start_thread(self.__monitor_quote)
   
-  def wait_for_price_fall(self, target_price, func=None, func_args=[], func_kwargs={}):
+  def wait_for_price_fall(self, target_price, then=None, args=[], kwargs={}):
     '''
     Waits for your security to fall below a certain price then optionally runs a callback function 
 
     :param float target_price: your set target price
-    :param func: (optional) a callback function to run when price falls below target
-    :param list func_args: a list of args for your func
-    :param dict func_kwargs: a dict containing kwargs for your func
+    :param then: (optional) a callback function to run when price falls below target
+    :param list args: a list of args for your func
+    :param dict kwargs: a dict containing kwargs for your func
     '''
     self.monitor_in_background()
     while self.last_price > target_price and self.monitoring_active == True:
-      time.sleep(1)
-    if func:
-      func(*func_args, **func_kwargs)
+      time.sleep(.2)
+    if then:
+      then(*args, **kwargs)
 
   def run_below_price(self, target_price, func, func_args=[], func_kwargs={}):
     '''
@@ -92,20 +92,20 @@ class Quote:
     args = [target_price, func, func_args, func_kwargs]
     start_thread(self.wait_for_price_fall, args=args)
 
-  def wait_for_price_rise(self, target_price, func=None, func_args=[], func_kwargs={}):
+  def wait_for_price_rise(self, target_price, then=None, args=[], kwargs={}):
     '''
     Waits for your security to rise above a certain price then optionally runs a callback function 
 
     :param float target_price: your set target price
-    :param func: (optional) a callback function to run when price rises above target
-    :param list func_args: a list of args for your func
-    :param dict func_kwargs: a dict containing kwargs for your func
+    :param then: (optional) a callback function to run when price rises above target
+    :param list args: a list of args for your func
+    :param dict kwargs: a dict containing kwargs for your func
     '''
     self.monitor_in_background()
     while self.last_price < target_price and self.monitoring_active == True:
-      time.sleep(1)
-    if func:
-      func(*func_args, **func_kwargs)
+      time.sleep(.2)
+    if then:
+      then(*args, **kwargs)
 
   def run_above_price(self, target_price, func, func_args=[], func_kwargs={}):
     '''

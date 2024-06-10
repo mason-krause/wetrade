@@ -21,7 +21,7 @@ class DataFrameQuote(Quote):
   :param str symbol: the symbol of your security
   '''
   def __init__(self, client:APIClient, symbol):
-    super().__init__()
+    Quote.__init__(self, client, symbol)
     self.data = pl.DataFrame(schema={ #maybe use numpy array instead of polars df
       'datetime': pl.Datetime,
       'datetime_epoch': pl.Int64,

@@ -14,7 +14,7 @@ class MultiQuote:
   def __init__(self, client:APIClient, symbols:tuple):
     self.client = client
     self.symbols = symbols
-    self.symbol_str = ', '.join(self.symbols)
+    self.symbol_str = ','.join(self.symbols)
     self.last_prices = {}
     self.monitoring_active = False
     self.market_hours = MarketHours()
@@ -53,7 +53,7 @@ class MultiQuote:
         self.monitoring_active = True
       while self.monitoring_active == True and self.market_hours.market_has_closed() == False:
         self.get_last_price()
-        time.sleep(.5)
+        time.sleep(.4)
       self.monitoring_active = False
       
   def monitor_in_background(self):
@@ -62,22 +62,22 @@ class MultiQuote:
     '''
     start_thread(self.__monitor_quote)
   
-  def wait_for_price_fall(self, symbol, target_price, func=None, func_args=[], func_kwargs={}):
+  def wait_for_price_fall(self, symbol, target_price, then=None, args=[], kwargs={}):
     '''
     Waits for a specified security to fall below a certain price then optionally runs a callback function 
 
     :param str symbol: the symbol of your specified security
     :param float target_price: your set target price
-    :param func: (optional) a callback function to run when price falls below target
-    :param list func_args: a list of args for your func
-    :param dict func_kwargs: a dict containing kwargs for your func
+    :param then: (optional) a callback function to run when price falls below target
+    :param list args: a list of args for your func
+    :param dict kwargs: a dict containing kwargs for your func
     '''
     if symbol in self.symbols:
       self.monitor_in_background()
       while self.last_prices[symbol] > target_price and self.monitoring_active == True:
-        time.sleep(1)
-      if func:
-        func(*func_args, **func_kwargs)
+        time.sleep(.2)
+      if then:
+        then(*args, **kwargs)
 
   def run_below_price(self, symbol, target_price, func, func_args=[], func_kwargs={}):
     '''
@@ -92,22 +92,22 @@ class MultiQuote:
     args = [symbol, target_price, func, func_args, func_kwargs]
     start_thread(self.wait_for_price_fall, args=args)
 
-  def wait_for_price_rise(self, symbol, target_price, func=None, func_args=[], func_kwargs={}):
+  def wait_for_price_rise(self, symbol, target_price, then=None, args=[], kwargs={}):
     '''
     Waits for a specified security to rise above a certain price then optionally runs a callback function 
 
     :param str symbol: the symbol of your specified security
     :param float target_price: your set target price
-    :param func: (optional) a callback function to run when price rises above target
-    :param list func_args: a list of args for your func
-    :param dict func_kwargs: a dict containing kwargs for your func
+    :param then: (optional) a callback function to run when price rises above target
+    :param list args: a list of args for your func
+    :param dict kwargs: a dict containing kwargs for your func
     '''
     if symbol in self.symbols:
       self.monitor_in_background()
       while self.last_prices[symbol] < target_price and self.monitoring_active == True:
         time.sleep(1)
-      if func:
-        func(*func_args, **func_kwargs)
+      if then:
+        then(*args, **kwargs)
 
   def run_above_price(self, symbol, target_price, func, func_args=[], func_kwargs={}):
     '''

@@ -196,8 +196,7 @@ cancel_order_response = {
         'code': 5011,
         'type': 'WARNING'}]}}}
 
-
-order_status_responses = [{
+order_status_response = {
   'OrdersResponse': {
     'Order': [{
       'orderId': 529,
@@ -243,50 +242,4 @@ order_status_responses = [{
             'estimatedFees': 0.0,
             'Product': {
               'symbol': 'IBM',
-              'securityType': 'EQ'}}]}]}}]}} , {
-  'OrdersResponse': {
-    'Order': [{
-      'orderId': 529,
-      'orderType': 'EQ',
-      'OrderDetail': [{
-        'placedTime': 1354532494528,
-        'orderValue': 120,
-        'status': 'EXECUTED',
-        'orderTerm': 'GOOD_FOR_DAY',
-        'priceType': 'LIMIT',
-        'limitPrice': 120,
-        'stopPrice': 0,
-        'marketSession': 'REGULAR',
-        'replacesOrderId': 528,
-        'allOrNone': False,
-        'netPrice': 0,
-        'netBid': 0,
-        'netAsk': 0,
-        'gcd': 0,
-        'ratio': '',
-        'Instrument': [{
-          'symbolDescription': '',
-          'orderAction': 'BUY',
-          'quantityType': 'QUANTITY',
-          'quantity': 100,
-          'cancelQuantity': 0,
-          'reserveOrder': False,
-          'reserveQuantity': 0,
-          'Product': {
-            'symbol': 'IBM',
-            'securityType': 'EQ'}}]}],
-      'Events': {
-        'Event': [{
-          'name': 'ORDER_PLACED',
-          'dateTime': 1354532494528,
-          'Instrument': [{
-            'symbolDescription': '',
-            'orderAction': 'BUY',
-            'quantityType': 'QUANTITY',
-            'orderedQuantity': 100,
-            'filledQuantity': 0.0,
-            'estimatedCommission': 0.0,
-            'estimatedFees': 0.0,
-            'Product': {
-              'symbol': 'IBM',
-              'securityType': 'EQ'}}]}]}}]}}]
+              'securityType': 'EQ'}}]}]}}]}} 
