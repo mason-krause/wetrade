@@ -75,10 +75,13 @@ class Quote:
     :param dict kwargs: a dict containing kwargs for your func
     '''
     self.monitor_in_background()
-    while self.last_price > target_price and self.monitoring_active == True:
+    waiting = True
+    while waiting and self.monitoring_active == True:
+      if self.last_price < target_price:
+        waiting = False
+        if then:
+          then(*args, **kwargs)
       time.sleep(.2)
-    if then:
-      then(*args, **kwargs)
 
   def run_below_price(self, target_price, func, func_args=[], func_kwargs={}):
     '''
@@ -102,10 +105,13 @@ class Quote:
     :param dict kwargs: a dict containing kwargs for your func
     '''
     self.monitor_in_background()
-    while self.last_price < target_price and self.monitoring_active == True:
+    waiting = True
+    while waiting and self.monitoring_active == True:
+      if self.last_price > target_price:
+        waiting = False
+        if then:
+          then(*args, **kwargs)
       time.sleep(.2)
-    if then:
-      then(*args, **kwargs)
 
   def run_above_price(self, target_price, func, func_args=[], func_kwargs={}):
     '''

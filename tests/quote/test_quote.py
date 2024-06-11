@@ -3,10 +3,10 @@ import time
 from wetrade.quote import Quote
 from wetrade.market_hours import MarketHours
 from tests.mock_api import MockAPIClient as APIClient
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 
-@patch.object(MarketHours, 'market_has_closed', lambda self: False)
+@patch('wetrade.market_hours.MarketHours.market_has_closed', MagicMock(return_value=False))
 class TestQuote:
   @classmethod
   def setup_class(cls):

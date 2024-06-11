@@ -74,10 +74,13 @@ class MultiQuote:
     '''
     if symbol in self.symbols:
       self.monitor_in_background()
-      while self.last_prices[symbol] > target_price and self.monitoring_active == True:
+      waiting = True
+      while waiting and self.monitoring_active == True:
+        if self.last_prices[symbol] < target_price:
+          waiting = False
+          if then:
+            then(*args, **kwargs)
         time.sleep(.2)
-      if then:
-        then(*args, **kwargs)
 
   def run_below_price(self, symbol, target_price, func, func_args=[], func_kwargs={}):
     '''
@@ -104,10 +107,13 @@ class MultiQuote:
     '''
     if symbol in self.symbols:
       self.monitor_in_background()
-      while self.last_prices[symbol] < target_price and self.monitoring_active == True:
-        time.sleep(1)
-      if then:
-        then(*args, **kwargs)
+      waiting = True
+      while waiting and self.monitoring_active == True:
+        if self.last_prices[symbol] > target_price:
+          waiting = False
+          if then:
+            then(*args, **kwargs)
+        time.sleep(.2)
 
   def run_above_price(self, symbol, target_price, func, func_args=[], func_kwargs={}):
     '''
