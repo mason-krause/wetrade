@@ -62,9 +62,7 @@ Next, you'll get going in no time using our automated new project script!
 
 You'll now see a handful of files in your project directory including a `settings.py 
 <https://wetrade.readthedocs.io/en/latest/settings.html>`__ file where you'll enter your 
-user and API info and have the option to configure various ``wetrade`` settings. In this
-file, you'll enter your username, password, client_key, and client_secret so ``wetrade`` 
-can log into your account.
+user and API info and have the option to configure various ``wetrade`` settings.
 
 In addition to `settings.py <https://wetrade.readthedocs.io/en/latest/settings.html>`__
 , we've also created a *Dockerfile* `for easy deployment 

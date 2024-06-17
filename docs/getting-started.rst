@@ -50,8 +50,7 @@ Next, you'll get going in no time using our automated new project script!
 
 You'll now see a handful of files in your project directory including a :ref:`settings.py <settings>`
 file where you'll enter your user and API info and have the option to configure various
-``wetrade`` settings. In this file, you'll enter your username, password, client_key, 
-and client_secret so ``wetrade`` can log into your account.
+``wetrade`` settings. 
 
 In addition to :ref:`settings.py <settings>`, we've also created a *Dockerfile* :ref:`for easy
 deployment <deployment>` as well as a *requirements.txt* and an example file *main.py* which 
