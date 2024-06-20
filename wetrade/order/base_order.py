@@ -203,7 +203,7 @@ class BaseOrder:
 
   def check_status(self):
     '''Checks the status of an already placed order'''
-    response, status_code = self.client.request_order_status(account_key=self.account_key, order_id=self.order_id, symbol=self.symbol)
+    response, status_code = self.client.request_order_info(account_key=self.account_key, order_id=self.order_id, symbol=self.symbol)
     status = ''
     execution_price = 0.0
     with suppress(Exception):

@@ -9,6 +9,8 @@ setuptools.setup(
   author = 'Mason Krause',
   description = 'An E-Trade python library built for active stock trading',
   long_description = long_description,
+  long_description_content_type='text/x-rst',
+  url='https://github.com/mason-krause/wetrade',
   packages = setuptools.find_packages(),
   include_package_data = True,
   python_requires = '>=3.7',

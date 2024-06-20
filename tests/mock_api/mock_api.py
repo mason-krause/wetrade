@@ -13,8 +13,8 @@ def generate_quote_response(symbol='GOOG', last_prices=[577.51]):
     quote_list.append(quote)
   return {'QuoteResponse': {'QuoteData': quote_list}}
 
-def generate_status_response(status='OPEN'):
-  r = copy.deepcopy(order_responses.order_status_response)
+def generate_order_info_response(status='OPEN'):
+  r = copy.deepcopy(order_responses.order_info_response)
   r['OrdersResponse']['Order'][0]['OrderDetail'][0]['status'] = status
   return r
 
@@ -23,7 +23,7 @@ class MockAPIClient:
     self.session = MagicMock()
     self.reset_quote_queue()
     self.reset_multiquote_queue()
-    self.reset_order_status_queue()
+    self.reset_order_info_queue()
 
   def reset_quote_queue(self):
     self.quote_response_queue = iter((
@@ -47,14 +47,14 @@ class MockAPIClient:
       self.multiquote_response_queue, 
       generate_quote_response('TSLA,NVDA', [210.50, 1050.45]))
 
-  def reset_order_status_queue(self):
-    self.order_status_response_queue = iter(
-      (order_responses.order_status_response, ) * 4)
+  def reset_order_info_queue(self):
+    self.order_info_response_queue = iter(
+      (order_responses.order_info_response, ) * 4)
     
-  def next_order_status_response(self):
+  def next_order_info_response(self):
     return next(
-      self.order_status_response_queue, 
-      generate_status_response('EXECUTED'))
+      self.order_info_response_queue, 
+      generate_order_info_response('EXECUTED'))
 
   def request_account_list(self):
     return (account_responses.account_list_response, 200)
@@ -107,8 +107,8 @@ class MockAPIClient:
     assert symbol == 'IBM'
     return (order_responses.cancel_order_response, 200)
   
-  def request_order_status(self, account_key, order_id, symbol=''):
+  def request_order_info(self, account_key, order_id, symbol=''):
     assert account_key == 'vQMsebA1H5WltUfDkJP48g'
     assert order_id == 529
     assert symbol == 'IBM'
-    return (self.next_order_status_response(), 200)
+    return (self.next_order_info_response(), 200)

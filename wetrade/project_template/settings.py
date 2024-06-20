@@ -19,7 +19,7 @@ config_options = {
     'totp_secret': 'TOTP_SECRET'}}
 # Google Cloud settings (optional)
 # need GOOGLE_APPLICATION_CREDENTIALS env var set to json path
-enable_cloud_logging = False
+enable_logging = False
 quote_bucket = 'your-quote-bucket'
 
 config = config_options[config_id]

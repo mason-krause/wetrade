@@ -1,7 +1,6 @@
 import pytest
 import time
 from wetrade.quote import Quote
-from wetrade.market_hours import MarketHours
 from tests.mock_api import MockAPIClient as APIClient
 from unittest.mock import patch, MagicMock
 
