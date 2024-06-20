@@ -196,7 +196,7 @@ cancel_order_response = {
         'code': 4186,
         'type': 'WARNING'}]}}}
 
-order_info_response = {
+order_detail_response = {
   'Error': {
     'code': 100,
     'message': 'The requested service is not currently available, please try after sometime.'}}

@@ -183,12 +183,12 @@ class TestAPIClient(unittest.TestCase):
       (order_responses.cancel_order_response, 200),
       'Incorrect cancel order response received')      
          
-  def test_request_order_info(self):
+  def test_request_order_detail(self):
     account_key = 'vQMsebA1H5WltUfDkJP48g'
     order_id = 773
     symbol = 'IBM'
-    response = self.client.request_order_info(account_key, order_id, symbol)
+    response = self.client.request_order_detail(account_key, order_id, symbol)
     self.assertEqual(
       response,
-      (order_responses.order_info_response, 500),
+      (order_responses.order_detail_response, 500),
       'Incorrect order status response received')   

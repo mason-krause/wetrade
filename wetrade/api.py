@@ -194,9 +194,9 @@ class APIClient:
       symbol = symbol)
     return (parse_response_data(r), r.status_code)  
 
-  def request_order_info(self, account_key, order_id, symbol=''):
+  def request_order_detail(self, account_key, order_id, symbol=''):
     '''
-    Requests the status and other data of an already placed order
+    Requests detailed information for an already placed order including order status
 
     :param str account_key: your specified account key
     :param int order_id: the ID of your order 
@@ -205,7 +205,7 @@ class APIClient:
     url = self.session.config['base_url'] + 'v1/accounts/{}/orders/{}.json'.format(account_key, order_id)
     r = self.session.get(url=url)
     log_in_background(
-      called_from = 'request_order_info', 
+      called_from = 'request_order_detail', 
       url = url,
       r = r,
       symbol = symbol)

@@ -61,7 +61,7 @@ class TestBaseOrder:
 
   @pytest.mark.timeout(10)
   def test_wait_for_status(self):
-    self.order.client.reset_order_info_queue()
+    self.order.client.reset_order_detail_queue()
     if self.order.order_id == 0:
       self.order.place_order()
     waiting = True
@@ -72,7 +72,7 @@ class TestBaseOrder:
     assert waiting == False, 'Error waiting for status'
 
   def test_run_when_status(self):
-    self.order.client.reset_order_info_queue()
+    self.order.client.reset_order_detail_queue()
     if self.order.order_id == 0:
       self.order.place_order()
     waiting = True

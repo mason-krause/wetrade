@@ -196,7 +196,7 @@ cancel_order_response = {
         'code': 5011,
         'type': 'WARNING'}]}}}
 
-order_info_response = {
+order_detail_response = {
   'OrdersResponse': {
     'Order': [{
       'orderId': 529,
