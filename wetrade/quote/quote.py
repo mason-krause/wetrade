@@ -49,7 +49,7 @@ class Quote:
     self.last_price =  self.get_quote()['All']['lastTrade'] 
     return self.last_price
 
-  def __monitor_quote(self):
+  def _monitor_quote(self):
     if self.monitoring_active == False:
       if self.market_hours.market_has_closed() == False:
         self.monitoring_active = True
@@ -63,7 +63,7 @@ class Quote:
     '''
     Monitors quote details in a new thread to keep Quote.last_price up to date 
     '''
-    start_thread(self.__monitor_quote)
+    start_thread(self._monitor_quote)
   
   def wait_for_price_fall(self, target_price, then=None, args=[], kwargs={}):
     '''

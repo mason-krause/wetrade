@@ -37,7 +37,7 @@ class DataFrameQuote(Quote):
       '10s_average': pl.Float64})
     self.smoothed_price = 0.0
 
-  def __monitor_quote(self):
+  def _monitor_quote(self):
     if self.monitoring_active == False:
       if self.market_hours.market_has_closed() == False:
         self.monitoring_active = True
@@ -58,10 +58,11 @@ class DataFrameQuote(Quote):
           '30s_average': 0.0,
           '10s_average': 0.0}))
         self.data = self.data.set_sorted('datetime').with_columns([
-          pl.col('last_trade').rolling_mean(window_size='30s', by='datetime', closed='both').alias('30s_average'),
-          pl.col('last_trade').rolling_mean(window_size='10s', by='datetime', closed='both').alias('10s_average')])
+          pl.col('last_trade').rolling_mean_by(by='datetime', window_size='30s', closed='both').alias('30s_average'),
+          pl.col('last_trade').rolling_mean_by(by='datetime', window_size='10s', closed='both').alias('10s_average')])
         self.smoothed_price = self.data[-1, '10s_average']
-      time.sleep(.5)
+        time.sleep(.5)
+      self.monitoring_active = False
 
   def export_data(self):
     '''

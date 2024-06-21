@@ -61,3 +61,19 @@ class Account:
         e = e,
         account_key = self.account_key)
       return self.view_portfolio()
+    
+  def get_order_history(self, start_date, end_date, marker=''):
+    '''
+    Provides details for all orders placed in account over specified time range
+    '''
+    response, status_code = self.client.request_account_orders(account_key=self.account_key, start_date=start_date, end_date=end_date, marker=marker)
+    try:
+      order_history = response['OrdersResponse']
+      return order_history
+    except Exception as e:
+      log_in_background(
+        called_from = 'get_order_history',
+        tags = ['user-message'], 
+        message = time.strftime('%H:%M:%S', time.localtime()) + ': Error getting account order history',
+        e = e,
+        account_key = self.account_key)

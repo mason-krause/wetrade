@@ -52,7 +52,7 @@ class BaseOrder:
     self.place_order_request = {}
     self.disable_await_status = False
 
-  def __modify_order(self, action_type='preview'):
+  def _modify_order(self, action_type='preview'):
     if action_type == 'preview':
       response, status_code = self.client.request_order_preview(account_key=self.account_key, order_data=self.preview_order_request)
       response_key = 'PreviewOrderResponse'
@@ -75,19 +75,20 @@ class BaseOrder:
       return response[response_key]
     elif 'Error' in response:
       error_code = response['Error']['code']
-      error_msg = lookup_error_msg(error_code=error_code, msg_ref=msg_ref, order_id=self.order_id)
-      log_in_background(
-        called_from = '__modify_order',
-        tags = ['user-message'], 
-        message = time.strftime('%H:%M:%S', time.localtime()) + error_msg,
-        account_key = self.account_key,
-        symbol = self.symbol)
+      if error_code not in (2084, 2085):
+        error_msg = lookup_error_msg(error_code=error_code, msg_ref=msg_ref, order_id=self.order_id)
+        log_in_background(
+          called_from = '__modify_order',
+          tags = ['user-message'], 
+          message = time.strftime('%H:%M:%S', time.localtime()) + error_msg,
+          account_key = self.account_key,
+          symbol = self.symbol)
       if error_code in (1508, 163, 1524):
         time.sleep(1)
         return self.__modify_order(action_type)
 
   def preview_order(self):
-    preview_response = self.__modify_order('preview')
+    preview_response = self._modify_order('preview')
     if preview_response:
       self.place_order_request = {
         'PlaceOrderRequest': {
@@ -101,7 +102,7 @@ class BaseOrder:
     '''Places your order'''
     preview = self.preview_order()
     if preview:
-      order_response = self.__modify_order('place')
+      order_response = self._modify_order('place')
       if order_response:
         self.order_id = order_response['OrderIds'][0]['orderId']
         log_in_background(
@@ -118,7 +119,7 @@ class BaseOrder:
     self.preview_order_request['PreviewOrderRequest']['Order']['limitPrice'] = new_price
     self.preview_order_request['PreviewOrderRequest']['Order']['stopPrice'] = new_price
     self.preview_order_request['PreviewOrderRequest']['Order']['stopLimitPrice'] = new_price
-    preview_response = self.__modify_order('preview_update')
+    preview_response = self._modify_order('preview_update')
     if preview_response:
       self.place_order_request = {
         'PlaceOrderRequest': {
@@ -138,7 +139,7 @@ class BaseOrder:
     self.updating = True
     preview = self.preview_update_price(new_price)
     if preview:
-      order_response = self.__modify_order('update')
+      order_response = self._modify_order('update')
       if order_response:
         self.order_id = order_response['OrderIds'][0]['orderId']
         self.price = new_price
@@ -159,7 +160,7 @@ class BaseOrder:
     self.order_type = 'MARKET'
     preview = self.preview_update_price(0.0)
     if preview:
-      order_response = self.__modify_order('update')
+      order_response = self._modify_order('update')
       if order_response:
         self.order_id = order_response['OrderIds'][0]['orderId']
         log_in_background(
@@ -214,7 +215,7 @@ class BaseOrder:
     self.status = status
     return status
 
-  def __handle_rejected_order(self):
+  def _handle_rejected_order(self):
     # # Need to reset client_order_id after rejection to resend, etc (see example below)
     # self.updating = True
     # self.client_order_id = random.randint(1000000000, 9999999999)
@@ -222,7 +223,7 @@ class BaseOrder:
     # self.place_order()
     # self.updating = False
     log_in_background(
-      called_from = 'wait_for_status',
+      called_from = '_handle_rejected_order',
       tags = ['user-message'], 
       account_key = self.account_key,
       symbol = self.symbol,
@@ -237,13 +238,27 @@ class BaseOrder:
     :param list args: a list of args for your function
     :param dict kwargs: a dict containing kwargs for your function
     '''
-    waiting = True
+    for i in range(10): # Wait up to 10 sec for order to get placed, otherwise stop waiting
+      if self.order_id == 0:
+        log_in_background(
+          called_from = 'wait_for_status',
+          tags = ['user-message'], 
+          account_key = self.account_key,
+          symbol = self.symbol,
+          message = '{}: Waiting to place order to {} {} shares of {} (Account: {})'.format(
+            time.strftime('%H:%M:%S', time.localtime()),
+            self.action,
+            self.quantity,
+            self.symbol, 
+            self.account_key))
+        time.sleep(1)
+    waiting = True if self.order_id != 0 else False
     stop_for = ('CANCELLED','EXECUTED','EXPIRED')
     while waiting and self.disable_await_status == False:
       if self.updating == False:
         order_status = self.check_status()
         if order_status == 'REJECTED': # special handling for rejected orders
-          return self.__handle_rejected_order()
+          return self._handle_rejected_order()
         if order_status == 'CANCELLED': # Double check canceled order for corner case waiting on new order_id
           time.sleep(1)
           order_status = self.check_status()
@@ -275,3 +290,19 @@ class BaseOrder:
     '''
     args = [status, func, func_args, func_kwargs]
     start_thread(self.wait_for_status, args=args)
+
+  def log_order_update(self, update='executed'):
+    log_in_background(
+      called_from = 'log_order_update',
+      tags = ['user-message'], 
+      account_key = self.account_key,
+      symbol = self.symbol,
+      message = '{}: Order {} {} to {} {} shares of {} for {} (Account: {})'.format(
+        time.strftime('%H:%M:%S', time.localtime()),
+        self.order_id,
+        update,
+        self.action,
+        self.quantity,
+        self.symbol,
+        self.price,
+        self.account_key))

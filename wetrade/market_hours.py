@@ -14,7 +14,7 @@ class MarketHours:
     self.date_str = datetime.datetime.now(self.est).strftime('%Y-%m-%d') if date_str == '' else date_str
     self.open = None
     self.close = None
-    self.__set_market_hours()
+    self._set_market_hours()
 
   def check_market_hours(self):
     r = requests.get('https://markethours.info/api', params={'date': self.date_str})
@@ -23,9 +23,9 @@ class MarketHours:
     
   def change_date(self, new_date_str):
     self.date_str = new_date_str
-    self.__set_market_hours()
+    self._set_market_hours()
   
-  def __set_market_hours(self):
+  def _set_market_hours(self):
     hours = self.check_market_hours()
     if hours == None or hours['open'] == '00:00:00': # in case you change_date('%Y-%m-%d')
       self.open = None
