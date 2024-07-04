@@ -127,16 +127,27 @@ class UserSession:
         r = self.session.request(http_method, *args, **kwargs, timeout=30)
       except Exception as e:
         error_num = 0
+        error_msg = ''
         with suppress(Exception):
           error_num = e.args[0].args[1].errno
-        if isinstance(e, requests.exceptions.ConnectionError) and error_num == 104:
-          log_in_background(
-            called_from = 'UserSession.handle_request', 
-            tags = ['user-message', 'connection-reset'], 
-            message = time.strftime('%H:%M:%S', time.localtime()) + ': Connection reset, retrying request',
-            url = url,
-            e = e)
-          return self.handle_request(http_method, args, kwargs)
+          error_msg = e.args[0].reason.message
+        if isinstance(e, requests.exceptions.ConnectionError):
+          if error_num == 104:
+            log_in_background(
+              called_from = 'UserSession.handle_request', 
+              tags = ['user-message', 'connection-error', 'connection-reset'], 
+              message = time.strftime('%H:%M:%S', time.localtime()) + ': Connection reset, retrying request',
+              url = url,
+              e = e)
+            return self.handle_request(http_method, args, kwargs)
+          else:
+            log_in_background(
+              called_from = 'UserSession.handle_request', 
+              tags = ['user-message', 'connection-error'], 
+              message = time.strftime('%H:%M:%S', time.localtime()) + ': Connection error ({}), retrying request'.format(str(error_msg)), 
+              url = url,
+              e = e)
+            return self.handle_request(http_method, args, kwargs)
         elif isinstance(e, requests.exceptions.Timeout):
           log_in_background(
             called_from = 'UserSession.handle_request', 

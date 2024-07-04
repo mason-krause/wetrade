@@ -1,8 +1,6 @@
 import logging
 import pprint
 import threading
-import requests
-import time
 import traceback
 import os
 import ast

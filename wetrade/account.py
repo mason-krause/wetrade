@@ -34,11 +34,14 @@ class Account:
     '''
     response, status_code = self.client.request_account_balance(account_key=self.account_key)
     try:
-      balance = response['BalanceResponse']['Computed']['cashAvailableForInvestment']
+      if 'accountBalance' in response['BalanceResponse']['Computed']:
+        balance = response['BalanceResponse']['Computed']['accountBalance']
+      else:
+        balance = response['BalanceResponse']['Computed']['cashAvailableForInvestment']
       return balance
     except Exception as e:
       log_in_background(
-        called_from = 'list_accounts',
+        called_from = 'check_balance',
         tags = ['user-message'], 
         message = time.strftime('%H:%M:%S', time.localtime()) + ': Error getting account balance, retrying',
         e = e,
@@ -55,7 +58,7 @@ class Account:
       return portfolio
     except Exception as e:
       log_in_background(
-        called_from = 'list_accounts',
+        called_from = 'view_portfolio',
         tags = ['user-message'], 
         message = time.strftime('%H:%M:%S', time.localtime()) + ': Error getting portfolio, retrying',
         e = e,

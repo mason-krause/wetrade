@@ -1,5 +1,5 @@
 # E-Trade settings
-login_method = 'auto' # 'auto', 'manual'
+login_method = 'manual' # 'auto', 'manual'
 use_2fa = False # needed to disable SMS auth - requires totp_secret
 config_id = 'sandbox'
 config_options = {

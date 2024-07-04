@@ -33,7 +33,7 @@ class MultiQuote:
         tags = ['user-message'], 
         message = time.strftime('%H:%M:%S', time.localtime()) + ': Error getting quote, retrying',
         e = e,
-        symbol = self.symbol)
+        symbol = self.symbol_str)
       time.sleep(.5)
       return self.get_quote()
    
