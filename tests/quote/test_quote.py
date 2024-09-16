@@ -34,6 +34,10 @@ class TestQuote:
     assert last_price in (577.51, 200.1, 700.50, 800.75), 'Error getting last price'
     assert self.quote.last_price == last_price, 'Error setting last price'
 
+  def test_get_options_chain(self):
+    options_chain = self.quote.get_options_chain()
+    assert options_chain[0]['Call']['symbol'] == 'GOOG'
+
   def test_monitor_in_background(self):
     self.quote.monitor_in_background()
     time.sleep(4)
@@ -74,5 +78,3 @@ class TestQuote:
     self.quote.run_above_price(650.75, func=func)
     time.sleep(2)
     assert waiting == False, 'Error waiting for status'
-
-

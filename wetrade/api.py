@@ -208,5 +208,35 @@ class APIClient:
       called_from = 'request_order_detail', 
       url = url,
       r = r,
+      account_key = account_key,
       symbol = symbol)
     return (parse_response_data(r), r.status_code)
+  
+  def request_options_chain(self, symbol, expiry_date='%Y-%m-%d', near_price=0.0, include_weekly=False, skip_adjusted=True):
+    '''
+    Requests a list of option chains for a specific underlying instrument
+
+    :param str symbol: the symbol of the underlying security
+    :param str expiry_date: (optional) search for options expiring on a specfic day
+    :param str symbol: (optional) this isn't required to check order status but is added to logs if provided
+    '''
+    url = self.session.config['base_url'] + 'v1/market/optionchains.json'
+    params = {'symbol': symbol}
+    if expiry_date != '%Y-%m-%d':
+      split_date = expiry_date.split('-')
+      params['expiryDay'] = split_date[2]
+      params['expiryMonth'] = split_date[1]
+      params['expiryYear'] = split_date[0]
+    if near_price != 0.0:
+      params['strikePriceNear'] = near_price
+    if include_weekly == True:
+      params['includeWeekly'] = 'true'
+    if skip_adjusted == False:
+      params['skipAdjusted'] = 'false'
+    r = self.session.get(url=url, params=params)
+    log_in_background(
+      called_from = 'request_options_chain', 
+      url = url,
+      r = r,
+      symbol = symbol)
+    return (parse_response_data(r), r.status_code)  

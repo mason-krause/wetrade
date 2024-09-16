@@ -112,3 +112,7 @@ class MockAPIClient:
     assert order_id == 529
     assert symbol == 'IBM'
     return (self.next_order_detail_response(), 200)
+  
+  def request_options_chain(self, symbol, expiry_date='%Y-%m-%d', near_price=0.0, include_weekly=False, skip_adjusted=True):
+    assert symbol == 'GOOG'
+    return (quote_responses.options_chain_response, 200)

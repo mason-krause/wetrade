@@ -191,4 +191,14 @@ class TestAPIClient(unittest.TestCase):
     self.assertEqual(
       response,
       (order_responses.order_detail_response, 500),
-      'Incorrect order status response received')   
+      'Incorrect order status response received')    
+            
+  def test_request_options_chain(self):
+    account_key = 'vQMsebA1H5WltUfDkJP48g'
+    order_id = 773
+    symbol = 'IBM'
+    response = self.client.request_options_chain(account_key, order_id, symbol)
+    self.assertEqual(
+      response,
+      (quote_responses.options_chain_response, 200),
+      'Incorrect options chain response received')   

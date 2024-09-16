@@ -258,18 +258,19 @@ class BaseOrder:
       if self.updating == False:
         order_status = self.check_status()
         if order_status == 'REJECTED': # special handling for rejected orders
+          waiting = False # do we need this if always returns?
           return self._handle_rejected_order()
         if order_status == 'CANCELLED': # Double check canceled order for corner case waiting on new order_id
           time.sleep(1)
           order_status = self.check_status()
         if order_status == status:
-          waiting = False
+          waiting = False # do we need this if always returns?
           if then:
             return then(*args, **kwargs)
           else:
             return
         elif order_status in stop_for:
-          waiting = False
+          waiting = False # do we need this if always returns?
           log_in_background(
             called_from = 'wait_for_status',
             tags = ['user-message'], 

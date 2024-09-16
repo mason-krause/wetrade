@@ -1,5 +1,6 @@
 import time
 import datetime
+import json
 from wetrade.api import APIClient
 from wetrade.market_hours import MarketHours
 from wetrade.utils import log_in_background, start_thread
@@ -48,6 +49,25 @@ class Quote:
     '''
     self.last_price =  self.get_quote()['All']['lastTrade'] 
     return self.last_price
+  
+  def get_options_chain(self, expiry_date='%Y-%m-%d', near_price=0.0, include_weekly=False, skip_adjusted=True):
+    '''
+    Gets the options chain for your security
+    '''
+    response, status_code = self.client.request_options_chain(symbol=self.symbol, expiry_date=expiry_date, near_price=near_price, include_weekly=include_weekly, skip_adjusted=skip_adjusted)
+    try:
+      options_chain = response['OptionChainResponse']['OptionPair']
+      return options_chain
+    except Exception as e:
+      log_in_background(
+        called_from = 'get_options_chain',
+        tags = ['user-message'], 
+        message = time.strftime('%H:%M:%S', time.localtime()) + ': Error getting options chain, retrying',
+        e = e,
+        symbol = self.symbol)
+      time.sleep(.5)
+      return self.get_options_chain(expiry_date=expiry_date, near_price=near_price, include_weekly=include_weekly, skip_adjusted=skip_adjusted)
+
 
   def _monitor_quote(self):
     if self.monitoring_active == False:

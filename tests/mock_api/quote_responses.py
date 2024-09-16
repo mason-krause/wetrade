@@ -58,3 +58,77 @@ quote_response = {
       'dateTime': '16:00:00 EDT 06-20-2012',
       'dateTimeUTC': 1340222400,
       'quoteStatus': 'REALTIME'}]}}
+
+options_chain_response = {
+  'OptionChainResponse': {
+    'OptionPair': [
+      {
+        'Call': {
+          'optionCategory': 'STANDARD',
+          'optionRootSymbol': 'GOOG',
+          'timeStamp': 1363975980,
+          'adjustedFlag': False,
+          'displaySymbol': "GOOG Mar 22 '13 $485 Call",
+          'optionType': 'CALL',
+          'strikePrice': 485.0,
+          'symbol': 'GOOG',
+          'bid': 0.02,
+          'ask': 0.01,
+          'bidSize': 0,
+          'askSize': 25,
+          'inTheMoney': 'n',
+          'volume': 178,
+          'openInterest': 2782,
+          'netChange': -0.01,
+          'lastPrice': 0.01,
+          'quoteDetail': 'https://api.sit.etrade.com/v1/market/quote/GOOG:2013:3:22:CALL:485.000000',
+          'osiKey': 'GOOG--130322C00485000',
+          'OptionGreeks': {
+            'rho': 0.0095,
+            'vega': 0.0751,
+            'theta': -0.018,
+            'delta': 0.0848,
+            'gamma': 0.0316,
+            'iv': 0.1407,
+            'currentValue': False
+          }
+        },
+        'Put': {
+          'optionCategory': 'STANDARD',
+          'optionRootSymbol': 'GOOG',
+          'timeStamp': 1363974660,
+          'adjustedFlag': False,
+          'displaySymbol': "GOOG Mar 22 '13 $485 Put",
+          'optionType': 'PUT',
+          'strikePrice': 485.0,
+          'symbol': 'GOOG',
+          'bid': 23.6,
+          'ask': 23.9,
+          'bidSize': 4,
+          'askSize': 2,
+          'inTheMoney': 'y',
+          'volume': 81,
+          'openInterest': 273,
+          'netChange': -8.95,
+          'lastPrice': 23.7,
+          'quoteDetail': 'https://api.sit.etrade.com/v1/market/quote/GOOG:2013:3:22:PUT:485.000000',
+          'osiKey': 'GOOG--130322P00485000',
+          'OptionGreeks': {
+            'rho': 0.0095,
+            'vega': 0.0751,
+            'theta': -0.018,
+            'delta': 0.0848,
+            'gamma': 0.0316,
+            'iv': 0.1407,
+            'currentValue': False
+          }
+        }
+      }
+    ],
+    'SelectedED': {
+      'month': 3,
+      'year': 2013,
+      'day': 22
+    }
+  }
+}
