@@ -17,7 +17,7 @@ class BaseOrder:
   :param int quantity: the quantity for your order
   :param float price: the price for your order
   '''
-  def __init__(self, client:APIClient, account_key, symbol, action, quantity, price):
+  def __init__(self, client:APIClient, account_key, symbol, action, quantity, price, security_type='EQ'):
     self.client = client
     self.account_key = account_key
     self.symbol = symbol
@@ -25,7 +25,7 @@ class BaseOrder:
     self.quantity = quantity
     self.price = price
     self.order_type = self.order_type if hasattr(self, 'order_type') else 'LIMIT'
-    self.security_type = self.security_type if hasattr(self, 'security_type') else 'EQ'
+    self.security_type = self.security_type if hasattr(self, 'security_type') else security_type
     self.client_order_id = random.randint(1000000000, 9999999999)
     self.order_id = 0
     self.updating = False
@@ -44,13 +44,21 @@ class BaseOrder:
           'stopLimitPrice': self.price,
           'Instrument': {
             'Product': {
-              'securityType': 'EQ',
+              'securityType': self.security_type,
               'symbol': self.symbol},
             'orderAction': self.action, # [BUY, SELL, BUY_TO_COVER, SELL_SHORT, BUY_OPEN, BUY_CLOSE, SELL_OPEN, SELL_CLOSE, EXCHANGE]
             'quantityType': 'QUANTITY',
             'quantity': self.quantity}}}}
     self.place_order_request = {}
     self.disable_await_status = False
+    if self.security_type == 'OPTN':
+      split_symbol = self.symbol.split(' ')
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['symbol'] = split_symbol[0]
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['callPut'] = split_symbol[-1].upper()
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['expiryYear'] = '20' + split_symbol[3][1:]
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['expiryMonth'] = time.strptime(split_symbol[1], '%b').tm_mon
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['expiryDay'] = split_symbol[2]
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['strikePrice'] = split_symbol[4][1:]
 
   def _modify_order(self, action_type='preview'):
     if action_type == 'preview':

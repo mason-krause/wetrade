@@ -24,14 +24,16 @@ order and react to order updates.
 
   import time
   from wetrade.api import APIClient
+  from wetrade.account import Account
   from wetrade.order import LimitOrder
 
 
   def main():
     my_api_client = APIClient()
+    account = Account(client=my_api_client)
     # Create then place order
     my_order = LimitOrder(
-      client = client,
+      client = my_api_client,
       account_key = account.account_key,
       symbol = 'NVDA',
       action = 'BUY',

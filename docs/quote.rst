@@ -29,7 +29,7 @@ throughout the day so that Quote().last_price always stays current.
 
   def main():
     my_api_client = APIClient()
-    my_quote = Quote(client=client, symbol='IBM')
+    my_quote = Quote(client=my_api_client, symbol='IBM')
     # Get the most recent quote details
     quote = my_quote.get_quote()
     print(f'Quote details: {quote}')

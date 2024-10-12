@@ -11,6 +11,7 @@
   quote
   order
   market-hours
+  options
   gcloud
   deployment
   user-session
