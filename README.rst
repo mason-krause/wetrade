@@ -137,7 +137,7 @@ allows you to utilize as much or as little of the library as you'd like. Our goa
 is to consistently add new functionality to support additional use cases. If you 
 have any comments or suggestions for new features, don't hesitate to create an 
 issue or reach out to: `wetrade.inbox@gmail.com <mailto:wetrade.inbox@gmail.com>`__.
-We've also created `a Discord server <https://discord.gg/cfutqvKb>`__ where you can 
+We've also created `a Discord server <https://discord.gg/QSJ6WvZmb7>`__ where you can 
 get help or just chat with other ``wetrade`` users. 
 
 
