@@ -42,23 +42,23 @@ class BaseOrder:
           'stopPrice': self.price,
           'limitPrice': self.price,
           'stopLimitPrice': self.price,
-          'Instrument': {
+          'Instrument': [{
             'Product': {
-              'securityType': self.security_type,
+              'securityType': self.security_type if self.security_type in ['EQ', 'OPTN', 'INDX', 'MF', 'MMF'] else 'OPTN',
               'symbol': self.symbol},
             'orderAction': self.action, # [BUY, SELL, BUY_TO_COVER, SELL_SHORT, BUY_OPEN, BUY_CLOSE, SELL_OPEN, SELL_CLOSE, EXCHANGE]
             'quantityType': 'QUANTITY',
-            'quantity': self.quantity}}}}
+            'quantity': self.quantity}]}}}
     self.place_order_request = {}
     self.disable_await_status = False
     if self.security_type == 'OPTN':
       split_symbol = self.symbol.split(' ')
-      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['symbol'] = split_symbol[0]
-      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['callPut'] = split_symbol[-1].upper()
-      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['expiryYear'] = '20' + split_symbol[3][1:]
-      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['expiryMonth'] = time.strptime(split_symbol[1], '%b').tm_mon
-      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['expiryDay'] = split_symbol[2]
-      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument']['Product']['strikePrice'] = split_symbol[4][1:]
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument'][0]['Product']['symbol'] = split_symbol[0]
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument'][0]['Product']['callPut'] = split_symbol[-1].upper()
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument'][0]['Product']['expiryYear'] = '20' + split_symbol[3][1:]
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument'][0]['Product']['expiryMonth'] = time.strptime(split_symbol[1], '%b').tm_mon
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument'][0]['Product']['expiryDay'] = split_symbol[2]
+      self.preview_order_request['PreviewOrderRequest']['Order']['Instrument'][0]['Product']['strikePrice'] = split_symbol[4][1:]
 
   def _modify_order(self, action_type='preview'):
     if action_type == 'preview':
@@ -86,14 +86,14 @@ class BaseOrder:
       if error_code not in (2084, 2085):
         error_msg = lookup_error_msg(error_code=error_code, msg_ref=msg_ref, order_id=self.order_id)
         log_in_background(
-          called_from = '__modify_order',
+          called_from = '_modify_order',
           tags = ['user-message'], 
           message = time.strftime('%H:%M:%S', time.localtime()) + error_msg,
           account_key = self.account_key,
           symbol = self.symbol)
       if error_code in (1508, 163, 1524):
         time.sleep(1)
-        return self.__modify_order(action_type)
+        return self._modify_order(action_type)
 
   def preview_order(self):
     preview_response = self._modify_order('preview')

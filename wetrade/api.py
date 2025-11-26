@@ -111,7 +111,7 @@ class APIClient:
       url = url,
       r = r,
       account_key = account_key,
-      symbol = order_data['PreviewOrderRequest']['Order']['Instrument']['Product']['symbol'])
+      symbol = order_data['PreviewOrderRequest']['Order']['Instrument'][0]['Product']['symbol'])
     return (parse_response_data(r), r.status_code)  
   
   def request_order_place(self, account_key, order_data):
@@ -150,7 +150,7 @@ class APIClient:
       url = url,
       r = r,
       account_key = account_key,
-      symbol = order_data['PreviewOrderRequest']['Order']['Instrument']['Product']['symbol'])
+      symbol = order_data['PreviewOrderRequest']['Order']['Instrument'][0]['Product']['symbol'])
     return (parse_response_data(r), r.status_code)  
 
   def request_order_change_place(self, account_key, order_id, order_data):
