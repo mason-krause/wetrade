@@ -2,19 +2,28 @@ import time
 
   
 def lookup_user_msg(action, price=0.0, account_key='', order_response={}, old_id=0):
+  order_ids = []
+  for order in order_response['OrderIds']:
+      order_ids.append(order['orderId'])
+  order_id_str =  ', '.join(order_ids)
   if order_response == {}:
     return ''
   if action == 'place_order':
-    return '{}: Placed {} order to {} {} for {} contracts of {} with a ${} {} amount (Order ID: {}, Account: {})'.format(
+    return '{}: Placed {} order to {} {} for {} with a {} amount of ${}. {} {} of {} and {} {} of {}. (Order ID: {}, Account: {})'.format(
       time.strftime('%H:%M:%S', time.localtime()),
-      order_response['Order'][0]['priceType'],
+      order_response['Order'][0]['priceType'], # net credit
       order_response['Order'][0]['Instrument'][0]['orderAction'].split('_')[1],
       order_response['orderType'],
-      order_response['Order'][0]['Instrument'][0]['quantity'],
       order_response['Order'][0]['Instrument'][0]['Product']['symbol'],
-      price,
       order_response['Order'][0]['priceType'],
-      order_response['OrderIds'][0]['orderId'],
+      price,
+      order_response['Order'][0]['Instrument'][0]['orderAction'].split('_')[0], 
+      order_response['Order'][0]['Instrument'][0]['quantity'],
+      order_response['Order'][0]['Instrument'][0]['symbolDescription'],
+      order_response['Order'][0]['Instrument'][1]['orderAction'].split('_')[0], 
+      order_response['Order'][0]['Instrument'][1]['quantity'],
+      order_response['Order'][0]['Instrument'][1]['symbolDescription'],
+      order_id_str,
       account_key)
   elif action == 'update_price':
     return '{}: Placed updated {} order to {} {} shares of {} at ${} (Order ID: {}, Account: {})'.format(
