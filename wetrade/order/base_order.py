@@ -51,6 +51,7 @@ class BaseOrder:
             'quantity': self.quantity}]}}}
     self.place_order_request = {}
     self.disable_await_status = False
+    self.lookup_user_msg = lookup_user_msg
     if self.security_type == 'OPTN':
       split_symbol = self.symbol.split(' ')
       self.preview_order_request['PreviewOrderRequest']['Order']['Instrument'][0]['Product']['symbol'] = split_symbol[0]
@@ -118,7 +119,7 @@ class BaseOrder:
           tags = ['user-message'], 
           account_key = self.account_key,
           symbol = self.symbol,
-          message = lookup_user_msg('place_order', price=self.price, account_key= self.account_key, order_response=order_response))
+          message = self.lookup_user_msg('place_order', price=self.price, account_key= self.account_key, order_response=order_response))
       return order_response
   
   def preview_update_price(self, new_price):
@@ -156,7 +157,7 @@ class BaseOrder:
           tags = ['user-message'], 
           account_key = self.account_key,
           symbol = self.symbol,
-          message = lookup_user_msg('update_price', price=self.price, account_key=self.account_key, order_response=order_response, old_id=old_id))
+          message = self.lookup_user_msg('update_price', price=self.price, account_key=self.account_key, order_response=order_response, old_id=old_id))
       self.updating = False
       return order_response
     self.updating = False
@@ -176,7 +177,7 @@ class BaseOrder:
           tags = ['user-message'], 
           account_key = self.account_key,
           symbol = self.symbol,
-          message = lookup_user_msg('to_market_order', price=self.price, account_key=self.account_key, order_response=order_response, old_id=old_id))
+          message = self.lookup_user_msg('to_market_order', price=self.price, account_key=self.account_key, order_response=order_response, old_id=old_id))
       self.updating = False
       return order_response
     self.updating = False
