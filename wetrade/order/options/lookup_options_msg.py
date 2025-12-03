@@ -2,10 +2,6 @@ import time
 
   
 def lookup_user_msg(action, price=0.0, account_key='', order_response={}, old_id=0):
-  order_ids = []
-  for order in order_response['OrderIds']:
-      order_ids.append(order['orderId'])
-  order_id_str =  ', '.join(order_ids)
   if order_response == {}:
     return ''
   if action == 'place_order':
@@ -23,7 +19,7 @@ def lookup_user_msg(action, price=0.0, account_key='', order_response={}, old_id
       order_response['Order'][0]['Instrument'][1]['orderAction'].split('_')[0], 
       order_response['Order'][0]['Instrument'][1]['quantity'],
       order_response['Order'][0]['Instrument'][1]['symbolDescription'],
-      order_id_str,
+      order_response['OrderIds'][0]['orderId'],
       account_key)
   elif action == 'update_price':
     return '{}: Placed updated {} order to {} {} shares of {} at ${} (Order ID: {}, Account: {})'.format(
