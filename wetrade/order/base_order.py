@@ -17,7 +17,7 @@ class BaseOrder:
   :param int quantity: the quantity for your order
   :param float price: the price for your order
   '''
-  def __init__(self, client:APIClient, account_key, symbol, action, quantity, price, security_type='EQ'):
+  def __init__(self, client:APIClient, account_key, symbol, action, quantity, price, security_type='EQ', market_session='REGULAR'):
     self.client = client
     self.account_key = account_key
     self.symbol = symbol
@@ -38,7 +38,7 @@ class BaseOrder:
           'allOrNone': 'false',
           'priceType': self.order_type, # [MARKET, LIMIT, STOP, STOP_LIMIT, TRAILING_STOP_CNST_BY_LOWER_TRIGGER, UPPER_TRIGGER_BY_TRAILING_STOP_CNST, TRAILING_STOP_PRCT_BY_LOWER_TRIGGER, UPPER_TRIGGER_BY_TRAILING_STOP_PRCT, TRAILING_STOP_CNST, TRAILING_STOP_PRCT, HIDDEN_STOP, HIDDEN_STOP_BY_LOWER_TRIGGER, UPPER_TRIGGER_BY_HIDDEN_STOP, NET_DEBIT, NET_CREDIT, NET_EVEN, MARKET_ON_OPEN, MARKET_ON_CLOSE, LIMIT_ON_OPEN, LIMIT_ON_CLOSE]
           'orderTerm': 'GOOD_FOR_DAY', # [GOOD_UNTIL_CANCEL, GOOD_FOR_DAY, GOOD_TILL_DATE, IMMEDIATE_OR_CANCEL, FILL_OR_KILL]
-          'marketSession': 'REGULAR',
+          'marketSession': market_session, # REGULAR, EXTENDED
           'stopPrice': self.price,
           'limitPrice': self.price,
           'stopLimitPrice': self.price,
