@@ -16,7 +16,7 @@ setuptools.setup(
   python_requires = '>=3.7',
   install_requires = [
     'authlib',
-    'playwright==1.44.0',
+    'playwright',
     'urllib3==1.26.16',
     'xmltodict',
     'pytz',
