@@ -26,14 +26,22 @@ def get_text_code(authorize_url, config={}):
         tags = ['user-message'], 
         message = time.strftime('%H:%M:%S', time.localtime()) + ': Logging in')
       try:
-        browser = p.firefox.launch(headless=headless_login)
-        page = browser.new_page()
+        browser = p.firefox.launch(headless=headless_login, firefox_user_prefs={'pdfjs.disabled': False})
+        context = browser.new_context()
+        context.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => false})")
+        page = context.new_page()
         page.goto('https://us.etrade.com/etx/pxy/login')
-        page.locator('#USER').fill(config['username'])
-        page.locator('#password').fill(config['password'])
+        # page.goto('https://us.etrade.com/etx/pxy/login', wait_until='domcontentloaded') # change if login timing out
+        page.locator('#USER').click()
+        page.keyboard.type(config['username'], delay=200)
+        page.locator('#password').click()
+        page.keyboard.type(config['password'], delay=200)
+        page.wait_for_timeout(600)
         if settings.use_2fa == True:
           page.locator('[for="useSecurityCode"]').click()
-          page.locator('#securityCode').fill(totp.now())
+          page.locator('#securityCode').click()
+          page.keyboard.type(totp.now(), delay=200)
+          page.wait_for_timeout(600)
         page.locator('#mfaLogonButton').click()
         page.wait_for_url(lambda url: url != 'https://us.etrade.com/etx/pxy/login', timeout=8000)
         if '/auth/login/' in page.url: # might need to be more specific
